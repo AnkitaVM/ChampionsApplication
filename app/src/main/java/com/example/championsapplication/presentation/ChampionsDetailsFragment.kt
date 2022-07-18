@@ -29,7 +29,7 @@ class ChampionsDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentChampionsDetailsBinding.inflate(
             inflater,
@@ -45,16 +45,6 @@ class ChampionsDetailsFragment : Fragment() {
 
         championsDetailsViewModel.getChampionDetails(championId)
         observeChampionDetails()
-
-//        binding.txtName.text = args.champion.name
-//        binding.txtTitle.text = args.champion.title
-//        binding.txtBlurb.text = args.champion.blurb
-//        if (args.champion.championImage != null) {
-//            val imageURL =
-//                BuildConfig.BASE_URL + ApiConstants.IMAGE_URL + args.champion.championImage!!.full
-//            Glide.with(requireContext()).load(imageURL)
-//                .into(binding.imgProfile)
-//        }
         return binding.root
     }
 
@@ -66,9 +56,9 @@ class ChampionsDetailsFragment : Fragment() {
                         binding.txtName.text = champion.name
                         binding.txtTitle.text = " - ".plus(champion.title)
                         binding.txtBlurb.text = champion.blurb
-                        if (champion.championImage != null) {
+                        champion.championImage?.let {
                             val imageURL =
-                                BuildConfig.BASE_URL + ApiConstants.IMAGE_URL + champion.championImage!!.full
+                                BuildConfig.BASE_URL + ApiConstants.IMAGE_URL + it.full
                             Glide.with(requireContext()).load(imageURL)
                                 .into(binding.imgProfile)
                         }

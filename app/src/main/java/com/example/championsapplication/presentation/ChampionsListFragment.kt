@@ -15,10 +15,7 @@ import com.example.championsapplication.R
 import com.example.championsapplication.data.model.Champion
 import com.example.championsapplication.data.model.Result
 import com.example.championsapplication.databinding.FragmentChampionsListBinding
-import com.example.championsapplication.di.CHAMPIONS_DETAILS_VIEW_MODEL_TYPE
-import com.example.championsapplication.di.CHAMPIONS_LIST_VIEW_MODEL_TYPE
 import javax.inject.Inject
-import javax.inject.Named
 
 /**
  * A fragment representing a list of Items.
@@ -33,14 +30,10 @@ class ChampionsListFragment : Fragment() {
     private lateinit var championsAdapter: ChampionsRecyclerViewAdapter
     private lateinit var binding: FragmentChampionsListBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding =
             FragmentChampionsListBinding.inflate(
                 inflater,
@@ -48,7 +41,7 @@ class ChampionsListFragment : Fragment() {
                 false
             )
 
-        (activity!!.application as ChampionsApplication).daggerComponent.inject(this)
+        (requireActivity().application as ChampionsApplication).daggerComponent.inject(this)
 
         // Set the adapter
         setChampionsAdapter()

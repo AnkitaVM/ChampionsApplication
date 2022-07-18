@@ -15,11 +15,11 @@ import com.example.championsapplication.databinding.LayoutItemChampionsListBindi
 class ChampionsRecyclerViewAdapter(
     private val values: List<Champion>,
     private val itemClickListener: ItemClickListener
-) : RecyclerView.Adapter<ChampionsRecyclerViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ChampionsRecyclerViewAdapter.ChampionViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChampionViewHolder {
 
-        return ViewHolder(
+        return ChampionViewHolder(
             LayoutItemChampionsListBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -29,31 +29,27 @@ class ChampionsRecyclerViewAdapter(
 
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = values[position]
-        holder.txtName.text = item.name
-        holder.txtChampionTitle.text = item.title
-        if (item.championImage != null) {
-            val imageURL =
-                BuildConfig.BASE_URL + ApiConstants.IMAGE_URL + item.championImage.full
-            Glide.with(holder.itemView.context).load(imageURL).into(holder.imgProfile)
-        }
+    override fun onBindViewHolder(holder: ChampionViewHolder, position: Int) {
+        holder.bindView(values[position])
     }
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(binding: LayoutItemChampionsListBinding) :
+    inner class ChampionViewHolder(private val binding: LayoutItemChampionsListBinding) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
-        val txtName: TextView = binding.txtName
-        val txtChampionTitle: TextView = binding.txtTitle
-        val imgProfile: ImageView = binding.imgProfile
 
         init {
             binding.root.setOnClickListener(this)
         }
 
-        override fun toString(): String {
-            return super.toString() + " '" + txtChampionTitle.text + "'"
+        fun bindView(champion: Champion) {
+            binding.txtName.text = champion.name
+            binding.txtTitle.text = champion.title
+            champion.championImage?.let {
+                val imageURL =
+                    BuildConfig.BASE_URL + ApiConstants.IMAGE_URL + it.full
+                Glide.with(binding.root.context).load(imageURL).into(binding.imgProfile)
+            }
         }
 
         override fun onClick(v: View?) {

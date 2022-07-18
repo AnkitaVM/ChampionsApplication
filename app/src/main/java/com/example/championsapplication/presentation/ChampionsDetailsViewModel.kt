@@ -14,12 +14,10 @@ class ChampionsDetailsViewModel(private val getChampionDetailsUseCase: GetChampi
     ViewModel() {
 
     private val _champion: MutableLiveData<Result<Champion>> = MutableLiveData()
-    val champion: LiveData<Result<Champion>>
-        get() {
-            return _champion
-        }
+    val champion: LiveData<Result<Champion>> get() = _champion
+
 
     fun getChampionDetails(chId: String) = viewModelScope.launch(Dispatchers.IO) {
-        _champion.postValue(getChampionDetailsUseCase.execute(chId))
+        _champion.postValue(getChampionDetailsUseCase(chId))
     }
 }

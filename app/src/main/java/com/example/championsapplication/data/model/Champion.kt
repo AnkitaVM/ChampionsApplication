@@ -13,5 +13,4 @@ data class Champion(
     val blurb: String,
     @SerializedName("image")
     val championImage: ChampionImage?
-) : Parcelable {
-}
+) : Parcelable

@@ -14,13 +14,11 @@ class ChampionsListViewModel(private var getAllChampionsUseCase: GetAllChampions
     ViewModel() {
 
     private val _champions: MutableLiveData<Result<List<Champion>>> = MutableLiveData()
-    val champions: LiveData<Result<List<Champion>>>
-        get() {
-            return _champions
-        }
+    val champions: LiveData<Result<List<Champion>>> get() = _champions
+
 
     fun getAllChampions() = viewModelScope.launch(Dispatchers.IO) {
-        val championsList = getAllChampionsUseCase.execute()
+        val championsList = getAllChampionsUseCase()
         _champions.postValue(championsList)
     }
 
