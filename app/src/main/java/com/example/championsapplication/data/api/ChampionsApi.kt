@@ -6,6 +6,6 @@ import retrofit2.http.GET
 
 interface ChampionsApi {
 
-    @GET(ApiConstants.CHAMPIONS_LIST)
+    @GET(CHAMPIONS_LIST)
     suspend fun getChampionsList(): Response<ChampionListResponse>
 }

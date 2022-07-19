@@ -3,20 +3,25 @@ package com.example.championsapplication.data.datasource
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.championsapplication.data.api.ChampionsApi
 import com.example.championsapplication.domain.model.ChampionListResponse
+import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.getResponseInWrappedResultClass
 import com.example.championsapplication.getSuccessMockResponse
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(MockitoJUnitRunner::class)
 class ApiDataSourceTest {
 
@@ -28,8 +33,6 @@ class ApiDataSourceTest {
     @Mock
     private lateinit var championsApi: ChampionsApi
 
-    @Mock
-    private lateinit var respone: Response<ChampionListResponse>
 
     @Before
     fun setUp() {
@@ -41,38 +44,23 @@ class ApiDataSourceTest {
         runTest {
             Mockito.`when`(championsApi.getChampionsList()).thenReturn(getSuccessMockResponse())
             val resultList = apiDataSource.callChampionsService()
-            MatcherAssert.assertThat(
+            Assert.assertEquals(
                 resultList.data,
-                CoreMatchers.`is`(getResponseInWrappedResultClass().data)
+                getResponseInWrappedResultClass().data
             )
         }
 
     }
 
-//    @Test
-//    fun getChampionsFromResponse_serviceResponseUnsuccessful_ErrorReturned() {
-//        runTest {
-//            Mockito.`when`(respone.isSuccessful).thenReturn(false)
-//            Mockito.`when`(respone.message()).thenReturn("test msg")
-//            val resultList = apiDataSource.callChampionsService()
-//            Assert.assertNull(resultList.data)
-//            Assert.assertTrue(resultList is Result.Error)
-//        }
-//
-//    }
+    @Test
+    fun getChampionsFromResponse_serviceResponseUnsuccessful_ErrorReturned() {
+        runTest {
+            val resultList = apiDataSource.callChampionsService()
+            Assert.assertNull(resultList.data)
+            Assert.assertTrue(resultList is Result.Error)
+        }
 
-//    @Test
-//    fun testCallChampionsService_serviceCalled_ExceptionResponseReturned() {
-//
-//        runTest {
-//            Mockito.`when`(championsApi.getChampionsList()).thenThrow(Exception())
-//            val result = apiDataSource.callChampionsService()
-//            MatcherAssert.assertThat(
-//                result.message,
-//                CoreMatchers.`is`(Exception().message)
-//            )
-//        }
-//
-//    }
+    }
+
 
 }

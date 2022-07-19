@@ -55,6 +55,9 @@ class ChampionsListFragment : Fragment() {
                         binding.pbProgress.visibility = View.INVISIBLE
                     }
                 }
+                is Result.Loading -> {
+                    binding.pbProgress.visibility = View.VISIBLE
+                }
                 is Result.Error -> {
                     binding.pbProgress.visibility = View.INVISIBLE
                     Toast.makeText(context, getString(R.string.error_occurred), Toast.LENGTH_LONG)

@@ -3,6 +3,7 @@ package com.example.championsapplication.data.repository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.championsapplication.data.datasource.ApiDataSource
 import com.example.championsapplication.data.datasource.DBDataSource
+import com.example.championsapplication.data.datasource.LocalDataSource
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.getResponseInWrappedResultClass
 import com.example.championsapplication.getResponseInWrappedResultClassFromDB
@@ -30,6 +31,9 @@ class ChampionRepositoryImplTest {
     private lateinit var championRepositoryImpl: ChampionRepositoryImpl
 
     @Mock
+    private lateinit var localDataSource: LocalDataSource
+
+    @Mock
     private lateinit var dbDataSource: DBDataSource
 
     @Mock
@@ -37,14 +41,41 @@ class ChampionRepositoryImplTest {
 
     @Before
     fun setUp() {
-        championRepositoryImpl = ChampionRepositoryImpl(apiDataSource, dbDataSource)
+        championRepositoryImpl =
+            ChampionRepositoryImpl(localDataSource, apiDataSource, dbDataSource)
     }
 
+    @Test
+    fun getChampionsList_whenListIsSavedInLocalCache_ListReturnedFromLocalCache() {
+        runTest {
+            `when`(localDataSource.getChampionsDataFromLocalCache())
+                .thenReturn(getResponseInWrappedResultClassFromDB())
+            val list = championRepositoryImpl.getChampions()
+            MatcherAssert.assertThat(
+                list.data,
+                CoreMatchers.`is`(getResponseInWrappedResultClassFromDB().data)
+            )
+        }
+
+    }
+
+    @Test
+    fun getChampionsList_whenListIsSavedInLocalCache_NoInteractioWithDbAndApiObject() {
+        runTest {
+            `when`(localDataSource.getChampionsDataFromLocalCache())
+                .thenReturn(getResponseInWrappedResultClassFromDB())
+            championRepositoryImpl.getChampions()
+            verifyNoInteractions(dbDataSource);
+            verifyNoInteractions(apiDataSource);
+        }
+    }
 
     @Test
     fun getChampionsList_whenListIsSavedInDb_ListReturnedFromDb() {
         runTest {
-            Mockito.`when`(dbDataSource.getAllChampions())
+            `when`(localDataSource.getChampionsDataFromLocalCache())
+                .thenReturn(Result.Error("No Data in Cache"))
+            `when`(dbDataSource.getAllChampions())
                 .thenReturn(getResponseInWrappedResultClassFromDB())
             val list = championRepositoryImpl.getChampions()
             MatcherAssert.assertThat(
@@ -58,7 +89,9 @@ class ChampionRepositoryImplTest {
     @Test
     fun getChampionsList_whenListSavedInDb_NoInteractioWithApiObject() {
         runTest {
-            Mockito.`when`(dbDataSource.getAllChampions())
+            `when`(localDataSource.getChampionsDataFromLocalCache())
+                .thenReturn(Result.Error("No Data in Cache"))
+            `when`(dbDataSource.getAllChampions())
                 .thenReturn(getResponseInWrappedResultClassFromDB())
             val list = championRepositoryImpl.getChampions()
             verifyNoInteractions(apiDataSource);
@@ -66,11 +99,13 @@ class ChampionRepositoryImplTest {
     }
 
     @Test
-    fun getChampionsList_whenNoListSavedInDb_ListReturnedFromApi() {
+    fun getChampionsList_whenNoListSavedInLocalAndDb_ListReturnedFromApi() {
         runTest {
-            Mockito.`when`(dbDataSource.getAllChampions())
+            `when`(localDataSource.getChampionsDataFromLocalCache())
+                .thenReturn(Result.Error("No Data in Cache"))
+            `when`(dbDataSource.getAllChampions())
                 .thenReturn(Result.Error("No Data in Db"))
-            Mockito.`when`(apiDataSource.callChampionsService())
+            `when`(apiDataSource.callChampionsService())
                 .thenReturn(getResponseInWrappedResultClass())
             val list = championRepositoryImpl.getChampions()
             MatcherAssert.assertThat(
@@ -87,4 +122,6 @@ class ChampionRepositoryImplTest {
             verify(dbDataSource, times(1)).getChampionDetails("1");
         }
     }
+
+
 }

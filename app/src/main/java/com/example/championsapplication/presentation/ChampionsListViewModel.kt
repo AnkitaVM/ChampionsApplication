@@ -20,9 +20,15 @@ class ChampionsListViewModel @Inject constructor(private var getAllChampionsUseC
     val champions: LiveData<Result<List<Champion>>> get() = _champions
 
 
-    fun getAllChampions() = viewModelScope.launch(Dispatchers.IO) {
-        val championsList = getAllChampionsUseCase()
-        _champions.postValue(championsList)
-    }
+    fun getAllChampions() =
+        viewModelScope.launch(Dispatchers.IO) {
+            _champions.postValue(Result.Loading())
+            try {
+                val championsList = getAllChampionsUseCase()
+                _champions.postValue(championsList)
+            } catch (e: Exception) {
+                _champions.postValue(Result.Error(e.message.toString()))
+            }
+        }
 
 }

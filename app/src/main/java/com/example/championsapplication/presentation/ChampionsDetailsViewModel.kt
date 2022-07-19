@@ -21,6 +21,12 @@ class ChampionsDetailsViewModel @Inject constructor(private val getChampionDetai
 
 
     fun getChampionDetails(chId: String) = viewModelScope.launch(Dispatchers.IO) {
-        _champion.postValue(getChampionDetailsUseCase(chId))
+        try {
+            _champion.postValue(Result.Loading())
+            _champion.postValue(getChampionDetailsUseCase(chId))
+        } catch (e: Exception) {
+            _champion.postValue(Result.Error(e.message.toString()))
+        }
+
     }
 }

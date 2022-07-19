@@ -36,13 +36,42 @@ class ChampionsApiTest {
     }
 
     @Test
+    fun getChampionsList_sendCorrectRequest_SuccessCorrectUrlCalled() {
+        runTest {
+            enqueueMockResponse()
+            championsApi.getChampionsList()
+            val request = mockWebserver.takeRequest()
+            Assert.assertEquals(request.path, CHAMPIONS_LIST)
+        }
+    }
+
+    @Test
     fun getChampionsList_sendRequest_SuccessResponseReceived() {
         runTest {
             enqueueMockResponse()
             val response = championsApi.getChampionsList()
             val request = mockWebserver.takeRequest()
+            Assert.assertEquals(request.path, CHAMPIONS_LIST)
+            Assert.assertTrue(response.isSuccessful)
             Assert.assertNotNull(response)
         }
+    }
+
+    @Test
+    fun getChampionsList_sendRequest_ErrorResponseReceived() {
+        runTest {
+            enqueueErrorMockResponse()
+            val response = championsApi.getChampionsList()
+            val request = mockWebserver.takeRequest()
+            Assert.assertFalse(response.isSuccessful)
+        }
+    }
+
+    private fun enqueueErrorMockResponse() {
+        val mockResponse = MockResponse()
+        mockResponse.setResponseCode(401)
+        mockResponse.setBody("{}")
+        mockWebserver.enqueue(mockResponse)
     }
 
     // Helper

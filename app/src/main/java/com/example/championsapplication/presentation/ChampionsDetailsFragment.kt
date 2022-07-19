@@ -12,7 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.championsapplication.BuildConfig
 import com.example.championsapplication.R
-import com.example.championsapplication.data.api.ApiConstants
+import com.example.championsapplication.data.api.IMAGE_URL
 import com.example.championsapplication.databinding.FragmentChampionsDetailsBinding
 import com.example.championsapplication.domain.model.Result
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,18 +46,23 @@ class ChampionsDetailsFragment : Fragment() {
             when (result) {
                 is Result.Success -> {
                     result.data?.let { champion ->
+                        binding.pbProgress.visibility = View.INVISIBLE
                         binding.txtName.text = champion.name
                         binding.txtTitle.text = " - ".plus(champion.title)
                         binding.txtBlurb.text = champion.blurb
                         champion.championImage?.let {
                             val imageURL =
-                                BuildConfig.BASE_URL + ApiConstants.IMAGE_URL + it.full
+                                BuildConfig.BASE_URL + IMAGE_URL + it.full
                             Glide.with(requireContext()).load(imageURL)
                                 .into(binding.imgProfile)
                         }
                     }
                 }
+                is Result.Loading -> {
+                    binding.pbProgress.visibility = View.VISIBLE
+                }
                 is Result.Error -> {
+                    binding.pbProgress.visibility = View.INVISIBLE
                     Toast.makeText(context, getString(R.string.error_occurred), Toast.LENGTH_LONG)
                         .show()
                 }

@@ -6,11 +6,15 @@ import com.example.championsapplication.MainCoroutineRule
 import com.example.championsapplication.domain.model.Champion
 import com.example.championsapplication.domain.model.ChampionImage
 import com.example.championsapplication.data.repository.FakeChampionRepositoryImpl
+import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.usecases.GetAllChampionsUseCase
 import com.example.championsapplication.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -35,9 +39,17 @@ class ChampionsListViewModelTest {
 
     @Test
     fun getAllChampions_championListViewModel_valueStoredInField() {
-        championsListViewModel.getAllChampions()
-        val list = championsListViewModel.champions.getOrAwaitValue()
-        assertThat(getChampionsList(), `is`(list.data))
+
+        runTest {
+            championsListViewModel.getAllChampions()
+            val championsLoading = championsListViewModel.champions.getOrAwaitValue()
+            Assert.assertTrue(championsLoading is Result.Loading)
+            delay(2)
+            val champions = championsListViewModel.champions.getOrAwaitValue()
+            Assert.assertTrue(champions is Result.Success)
+            Assert.assertEquals(champions.data, getChampionsList())
+        }
+
     }
 
     /* Helper */
