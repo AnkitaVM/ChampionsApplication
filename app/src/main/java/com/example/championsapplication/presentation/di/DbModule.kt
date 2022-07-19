@@ -1,4 +1,4 @@
-package com.example.championsapplication.di
+package com.example.championsapplication.presentation.di
 
 import android.content.Context
 import androidx.room.Room
@@ -7,16 +7,20 @@ import com.example.championsapplication.data.db.ChampionsDao
 import com.example.championsapplication.data.db.DATABASE_CHAMPIONS
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 
+@InstallIn(SingletonComponent::class)
 @Module
-class DbModule(var context: Context) {
+class DbModule {
     @Provides
-    fun provideChampionsDao(): ChampionsDao {
-        return buildDatabaseInstance().getChampionDao()
+    fun provideChampionsDao(@ApplicationContext context: Context): ChampionsDao {
+        return buildDatabaseInstance(context).getChampionDao()
     }
 
     @Provides
-    fun buildDatabaseInstance(): ChampionDatabase {
+    fun buildDatabaseInstance(context: Context): ChampionDatabase {
         return Room.databaseBuilder(context, ChampionDatabase::class.java, DATABASE_CHAMPIONS)
             .fallbackToDestructiveMigration().build()
     }

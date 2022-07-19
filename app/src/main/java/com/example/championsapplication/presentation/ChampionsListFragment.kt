@@ -6,28 +6,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.championsapplication.R
-import com.example.championsapplication.data.model.Champion
-import com.example.championsapplication.data.model.Result
 import com.example.championsapplication.databinding.FragmentChampionsListBinding
+import com.example.championsapplication.domain.model.Champion
+import com.example.championsapplication.domain.model.Result
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
  * A fragment representing a list of Items.
  */
+@AndroidEntryPoint
 class ChampionsListFragment : Fragment() {
+    private val championsViewModel: ChampionsListViewModel by viewModels()
 
     @Inject
-    lateinit var championsViewModelFactory: ChampionsViewModelFactory
-    lateinit var championsViewModel: ChampionsListViewModel
-
-    private var championsList = mutableListOf<Champion>()
-    private lateinit var championsAdapter: ChampionsRecyclerViewAdapter
+    lateinit var championsAdapter: ChampionsRecyclerViewAdapter
     private lateinit var binding: FragmentChampionsListBinding
 
     override fun onCreateView(
@@ -40,20 +39,10 @@ class ChampionsListFragment : Fragment() {
                 container,
                 false
             )
-
-        (requireActivity().application as ChampionsApplication).daggerComponent.inject(this)
-
         // Set the adapter
         setChampionsAdapter()
-        championsViewModel = ViewModelProvider(
-            this,
-            championsViewModelFactory
-        )[ChampionsListViewModel::class.java]
-
         championsViewModel.getAllChampions()
         observeChampionsData()
-
-
         return binding.root
     }
 
@@ -62,9 +51,7 @@ class ChampionsListFragment : Fragment() {
             when (result) {
                 is Result.Success -> {
                     result.data?.let { champions ->
-                        championsList.clear()
-                        championsList.addAll(champions)
-                        championsAdapter.notifyDataSetChanged()
+                        championsAdapter.differ.submitList(champions)
                         binding.pbProgress.visibility = View.INVISIBLE
                     }
                 }
@@ -79,15 +66,12 @@ class ChampionsListFragment : Fragment() {
     }
 
     private fun setChampionsAdapter() {
+
         binding.rvChampions.apply {
             layoutManager = LinearLayoutManager(context)
-            championsAdapter =
-                ChampionsRecyclerViewAdapter(championsList, object : ItemClickListener {
-                    override fun onItemClick(position: Int) {
-                        goToChampionDetailsFragment(championsList[position].id)
-                    }
-
-                })
+            championsAdapter.setChampionItemClickListener { selectedChampionId ->
+                goToChampionDetailsFragment(selectedChampionId)
+            }
             adapter = championsAdapter
         }
     }
@@ -99,5 +83,6 @@ class ChampionsListFragment : Fragment() {
             )
         findNavController().navigate(actionToChampionDetails)
     }
+
 
 }

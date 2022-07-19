@@ -3,8 +3,8 @@ package com.example.championsapplication.presentation
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.championsapplication.MainCoroutineRule
-import com.example.championsapplication.data.model.Champion
-import com.example.championsapplication.data.model.ChampionImage
+import com.example.championsapplication.domain.model.Champion
+import com.example.championsapplication.domain.model.ChampionImage
 import com.example.championsapplication.data.repository.FakeChampionRepositoryImpl
 import com.example.championsapplication.domain.usecases.GetAllChampionsUseCase
 import com.example.championsapplication.getOrAwaitValue

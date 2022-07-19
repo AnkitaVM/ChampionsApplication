@@ -4,13 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.championsapplication.data.model.Champion
-import com.example.championsapplication.data.model.Result
+import com.example.championsapplication.domain.model.Champion
+import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.usecases.GetAllChampionsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ChampionsListViewModel(private var getAllChampionsUseCase: GetAllChampionsUseCase) :
+@HiltViewModel
+class ChampionsListViewModel @Inject constructor(private var getAllChampionsUseCase: GetAllChampionsUseCase) :
     ViewModel() {
 
     private val _champions: MutableLiveData<Result<List<Champion>>> = MutableLiveData()

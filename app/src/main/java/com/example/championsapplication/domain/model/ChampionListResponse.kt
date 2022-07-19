@@ -1,4 +1,4 @@
-package com.example.championsapplication.data.model
+package com.example.championsapplication.domain.model
 
 import com.google.gson.annotations.SerializedName
 

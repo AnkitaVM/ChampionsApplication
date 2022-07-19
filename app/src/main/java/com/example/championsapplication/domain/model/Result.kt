@@ -1,4 +1,4 @@
-package com.example.championsapplication.data.model
+package com.example.championsapplication.domain.model
 
 
 sealed class Result<T>(val data: T? = null, val message: String? = null) {

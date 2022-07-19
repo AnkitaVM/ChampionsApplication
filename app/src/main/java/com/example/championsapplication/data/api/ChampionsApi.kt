@@ -1,6 +1,6 @@
 package com.example.championsapplication.data.api
 
-import com.example.championsapplication.data.model.ChampionListResponse
+import com.example.championsapplication.domain.model.ChampionListResponse
 import retrofit2.Response
 import retrofit2.http.GET
 

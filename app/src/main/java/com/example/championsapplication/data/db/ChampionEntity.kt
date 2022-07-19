@@ -3,8 +3,8 @@ package com.example.championsapplication.data.db
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.championsapplication.data.model.Champion
-import com.example.championsapplication.data.model.ChampionImage
+import com.example.championsapplication.domain.model.Champion
+import com.example.championsapplication.domain.model.ChampionImage
 
 @Entity(tableName = TABLE_CHAMPION)
 data class ChampionEntity(
@@ -31,8 +31,8 @@ data class ChampionEntity(
 
     fun toChampionModel(): Champion {
         var chImage: ChampionImage? = null
-        if (championImagePathFull != null) {
-            chImage = ChampionImage(championImagePathFull, "", "")
+        championImagePathFull?.let {
+            chImage = ChampionImage(it, "", "")
         }
         return Champion(id, key, name, title, blurb, chImage)
     }

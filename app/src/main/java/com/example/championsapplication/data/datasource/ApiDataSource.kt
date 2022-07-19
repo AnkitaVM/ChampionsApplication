@@ -1,9 +1,9 @@
 package com.example.championsapplication.data.datasource
 
 import com.example.championsapplication.data.api.ChampionsApi
-import com.example.championsapplication.data.model.Champion
-import com.example.championsapplication.data.model.ChampionListResponse
-import com.example.championsapplication.data.model.Result
+import com.example.championsapplication.domain.model.Champion
+import com.example.championsapplication.domain.model.ChampionListResponse
+import com.example.championsapplication.domain.model.Result
 import retrofit2.Response
 import javax.inject.Inject
 

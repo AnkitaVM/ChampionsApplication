@@ -2,8 +2,8 @@ package com.example.championsapplication.data.datasource
 
 import com.example.championsapplication.data.db.ChampionEntity
 import com.example.championsapplication.data.db.ChampionsDao
-import com.example.championsapplication.data.model.Champion
-import com.example.championsapplication.data.model.Result
+import com.example.championsapplication.domain.model.Champion
+import com.example.championsapplication.domain.model.Result
 import javax.inject.Inject
 
 class DBDataSource @Inject constructor(private var championsDao: ChampionsDao) {

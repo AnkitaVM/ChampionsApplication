@@ -1,19 +1,23 @@
-package com.example.championsapplication.di
+package com.example.championsapplication.presentation.di
 
+import com.example.championsapplication.BuildConfig
 import com.example.championsapplication.data.api.ChampionsApi
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+@InstallIn(SingletonComponent::class)
 @Module
-class ApiModule(private val baseURL: String) {
+class ApiModule{
 
     @Provides
     fun provideRetrofitInstance(): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(baseURL)
+            .baseUrl(BuildConfig.BASE_URL)
             .build()
     }
 

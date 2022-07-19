@@ -1,8 +1,5 @@
 package com.example.championsapplication.data.db
 
-import com.example.championsapplication.data.model.ChampionImage
-import com.google.gson.annotations.SerializedName
-
 const val DATABASE_CHAMPIONS = "champions_db"
 const val DATABASE_VERSION = 1
 const val TABLE_CHAMPION = "champion"

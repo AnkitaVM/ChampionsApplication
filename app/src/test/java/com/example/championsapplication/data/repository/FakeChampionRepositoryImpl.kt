@@ -1,8 +1,8 @@
 package com.example.championsapplication.data.repository
 
-import com.example.championsapplication.data.model.Champion
-import com.example.championsapplication.data.model.ChampionImage
-import com.example.championsapplication.data.model.Result
+import com.example.championsapplication.domain.model.Champion
+import com.example.championsapplication.domain.model.ChampionImage
+import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.repository.ChampionsRepository
 
 class FakeChampionRepositoryImpl : ChampionsRepository {

@@ -2,14 +2,12 @@ package com.example.championsapplication.data.datasource
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.championsapplication.data.api.ChampionsApi
-import com.example.championsapplication.data.model.ChampionListResponse
-import com.example.championsapplication.data.model.Result
+import com.example.championsapplication.domain.model.ChampionListResponse
 import com.example.championsapplication.getResponseInWrappedResultClass
 import com.example.championsapplication.getSuccessMockResponse
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

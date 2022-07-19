@@ -3,7 +3,7 @@ package com.example.championsapplication.data.datasource
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.championsapplication.data.db.ChampionEntity
 import com.example.championsapplication.data.db.ChampionsDao
-import com.example.championsapplication.data.model.Result
+import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.getChampionEntity
 import com.example.championsapplication.getChampionsEntitiesList
 import com.example.championsapplication.getChampionsList

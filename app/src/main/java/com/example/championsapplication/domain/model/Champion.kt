@@ -1,10 +1,7 @@
-package com.example.championsapplication.data.model
+package com.example.championsapplication.domain.model
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
 
-@Parcelize
 data class Champion(
     val id: String,
     val key: String,
@@ -13,4 +10,4 @@ data class Champion(
     val blurb: String,
     @SerializedName("image")
     val championImage: ChampionImage?
-) : Parcelable
+)

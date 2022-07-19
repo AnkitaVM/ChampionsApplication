@@ -3,19 +3,32 @@ package com.example.championsapplication.presentation
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.championsapplication.BuildConfig
 import com.example.championsapplication.data.api.ApiConstants
-import com.example.championsapplication.data.model.Champion
 import com.example.championsapplication.databinding.LayoutItemChampionsListBinding
+import com.example.championsapplication.domain.model.Champion
+import javax.inject.Inject
 
-class ChampionsRecyclerViewAdapter(
-    private val values: List<Champion>,
-    private val itemClickListener: ItemClickListener
+class ChampionsRecyclerViewAdapter @Inject constructor(
 ) : RecyclerView.Adapter<ChampionsRecyclerViewAdapter.ChampionViewHolder>() {
+
+    private lateinit var onChampionClickListener: ((String) -> Unit)
+
+    private val callback = object : DiffUtil.ItemCallback<Champion>() {
+        override fun areItemsTheSame(oldItem: Champion, newItem: Champion): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Champion, newItem: Champion): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+    val differ = AsyncListDiffer(this, callback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChampionViewHolder {
 
@@ -30,17 +43,13 @@ class ChampionsRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ChampionViewHolder, position: Int) {
-        holder.bindView(values[position])
+        holder.bindView(differ.currentList[position])
     }
 
-    override fun getItemCount(): Int = values.size
+    override fun getItemCount(): Int = differ.currentList.size
 
     inner class ChampionViewHolder(private val binding: LayoutItemChampionsListBinding) :
-        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
-
-        init {
-            binding.root.setOnClickListener(this)
-        }
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bindView(champion: Champion) {
             binding.txtName.text = champion.name
@@ -50,11 +59,13 @@ class ChampionsRecyclerViewAdapter(
                     BuildConfig.BASE_URL + ApiConstants.IMAGE_URL + it.full
                 Glide.with(binding.root.context).load(imageURL).into(binding.imgProfile)
             }
-        }
 
-        override fun onClick(v: View?) {
-            itemClickListener.onItemClick(bindingAdapterPosition)
+            binding.root.setOnClickListener { onChampionClickListener(champion.id) }
         }
+    }
+
+    fun setChampionItemClickListener(listener: ((String) -> Unit)) {
+        onChampionClickListener = listener
     }
 
 }
