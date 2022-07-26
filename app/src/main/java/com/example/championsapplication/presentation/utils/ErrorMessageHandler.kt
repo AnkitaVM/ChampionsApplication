@@ -1,4 +1,4 @@
-package com.example.championsapplication.presentation.uimodels
+package com.example.championsapplication.presentation.utils
 
 import android.content.Context
 import com.example.championsapplication.R

@@ -11,11 +11,10 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.championsapplication.R
 import com.example.championsapplication.databinding.FragmentChampionsListBinding
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.presentation.adapter.ChampionsRecyclerViewAdapter
-import com.example.championsapplication.presentation.uimodels.ErrorMessageHandler
+import com.example.championsapplication.presentation.utils.ErrorMessageHandler
 import com.example.championsapplication.presentation.viewmodels.ChampionsListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
