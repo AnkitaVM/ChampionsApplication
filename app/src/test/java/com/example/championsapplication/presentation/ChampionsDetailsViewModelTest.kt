@@ -8,6 +8,7 @@ import com.example.championsapplication.domain.usecases.GetChampionDetailsUseCas
 import com.example.championsapplication.getOrAwaitValue
 import com.example.championsapplication.presentation.uimodels.UIChampion
 import com.example.championsapplication.presentation.uimodels.UIChampionImage
+import com.example.championsapplication.presentation.viewmodels.ChampionsDetailsViewModel
 import com.example.championsapplication.utils.ChampionImageUIModelMapper
 import com.example.championsapplication.utils.ChampionUiModelMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi

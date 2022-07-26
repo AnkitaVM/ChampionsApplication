@@ -1,4 +1,4 @@
-package com.example.championsapplication.presentation
+package com.example.championsapplication.presentation.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,10 +13,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.championsapplication.R
 import com.example.championsapplication.databinding.FragmentChampionsListBinding
-import com.example.championsapplication.domain.model.Champion
 import com.example.championsapplication.domain.model.Result
+import com.example.championsapplication.presentation.adapter.ChampionsRecyclerViewAdapter
+import com.example.championsapplication.presentation.viewmodels.ChampionsListViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 /**
  * A fragment representing a list of Items.
@@ -24,7 +24,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ChampionsListFragment : Fragment() {
     private val championsViewModel: ChampionsListViewModel by viewModels()
-
     lateinit var championsAdapter: ChampionsRecyclerViewAdapter
     private lateinit var binding: FragmentChampionsListBinding
 
@@ -62,7 +61,6 @@ class ChampionsListFragment : Fragment() {
                     Toast.makeText(context, getString(R.string.error_occurred), Toast.LENGTH_LONG)
                         .show()
                 }
-
             }
         })
     }
@@ -85,6 +83,4 @@ class ChampionsListFragment : Fragment() {
             )
         findNavController().navigate(actionToChampionDetails)
     }
-
-
 }

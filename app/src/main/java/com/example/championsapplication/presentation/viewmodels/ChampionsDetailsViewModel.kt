@@ -1,16 +1,14 @@
-package com.example.championsapplication.presentation
+package com.example.championsapplication.presentation.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.championsapplication.domain.model.Champion
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.usecases.GetChampionDetailsUseCase
 import com.example.championsapplication.presentation.uimodels.UIChampion
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

@@ -24,5 +24,4 @@ class ViewModelModule {
     fun provideListUiChampionModelMapper(championUiModelMapper: ChampionUiModelMapper): ListMapper<Champion, UIChampion> {
         return ListMapperImpl(championUiModelMapper)
     }
-
 }

@@ -1,4 +1,4 @@
-package com.example.championsapplication.presentation
+package com.example.championsapplication.presentation.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,13 +15,13 @@ import com.example.championsapplication.R
 import com.example.championsapplication.data.api.IMAGE_URL
 import com.example.championsapplication.databinding.FragmentChampionsDetailsBinding
 import com.example.championsapplication.domain.model.Result
+import com.example.championsapplication.presentation.viewmodels.ChampionsDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ChampionsDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentChampionsDetailsBinding
-
     private val championsDetailsViewModel: ChampionsDetailsViewModel by viewModels()
     private val args: ChampionsDetailsFragmentArgs by navArgs()
 
@@ -46,15 +46,17 @@ class ChampionsDetailsFragment : Fragment() {
             when (result) {
                 is Result.Success -> {
                     result.data?.let { champion ->
-                        binding.pbProgress.visibility = View.INVISIBLE
-                        binding.txtName.text = champion.name
-                        binding.txtTitle.text = " - ".plus(champion.title)
-                        binding.txtBlurb.text = champion.blurb
-                        champion.championImage?.let {
-                            val imageURL =
-                                BuildConfig.BASE_URL + IMAGE_URL + it.full
-                            Glide.with(requireContext()).load(imageURL)
-                                .into(binding.imgProfile)
+                        binding.apply {
+                            pbProgress.visibility = View.INVISIBLE
+                            txtName.text = champion.name
+                            txtTitle.text = " - ".plus(champion.title)
+                            txtBlurb.text = champion.blurb
+                            champion.championImage?.let {
+                                val imageURL =
+                                    BuildConfig.BASE_URL + IMAGE_URL + it.full
+                                Glide.with(requireContext()).load(imageURL)
+                                    .into(imgProfile)
+                            }
                         }
                     }
                 }
@@ -66,10 +68,7 @@ class ChampionsDetailsFragment : Fragment() {
                     Toast.makeText(context, getString(R.string.error_occurred), Toast.LENGTH_LONG)
                         .show()
                 }
-
             }
-
         })
     }
-
 }

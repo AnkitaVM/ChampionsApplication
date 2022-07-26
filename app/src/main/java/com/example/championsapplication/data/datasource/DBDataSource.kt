@@ -6,7 +6,9 @@ import com.example.championsapplication.domain.model.Champion
 import com.example.championsapplication.domain.model.Result
 import javax.inject.Inject
 
-class DBDataSource @Inject constructor(private var championsDao: ChampionsDao) {
+class DBDataSource @Inject constructor(
+    private var championsDao: ChampionsDao
+) {
     suspend fun insertAllChampions(champions: List<Champion>) {
         championsDao.insertAllChampions(champions.map { champion ->
             ChampionEntity.fromChampionModel(champion)

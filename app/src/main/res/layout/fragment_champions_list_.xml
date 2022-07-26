@@ -27,6 +27,6 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".presentation.ChampionsListFragment"
+        tools:context=".presentation.fragments.ChampionsListFragment"
         tools:listitem="@layout/layout_item_champions_list" />
 </androidx.constraintlayout.widget.ConstraintLayout><!--</layout>-->

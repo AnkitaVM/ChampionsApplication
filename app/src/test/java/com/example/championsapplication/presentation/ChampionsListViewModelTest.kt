@@ -9,11 +9,11 @@ import com.example.championsapplication.domain.usecases.GetAllChampionsUseCase
 import com.example.championsapplication.getOrAwaitValue
 import com.example.championsapplication.presentation.uimodels.UIChampion
 import com.example.championsapplication.presentation.uimodels.UIChampionImage
+import com.example.championsapplication.presentation.viewmodels.ChampionsListViewModel
 import com.example.championsapplication.utils.ChampionImageUIModelMapper
 import com.example.championsapplication.utils.ChampionUiModelMapper
 import com.example.championsapplication.utils.ListMapperImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert

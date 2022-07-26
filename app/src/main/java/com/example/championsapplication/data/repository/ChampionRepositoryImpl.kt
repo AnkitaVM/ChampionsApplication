@@ -34,7 +34,6 @@ class ChampionRepositoryImpl @Inject constructor(
                 champions = getChampionsDataFromApi()
             }
         }
-
         return champions
     }
 

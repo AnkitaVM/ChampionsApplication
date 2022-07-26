@@ -1,4 +1,4 @@
-package com.example.championsapplication.presentation
+package com.example.championsapplication.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -38,7 +38,6 @@ class ChampionsRecyclerViewAdapter @Inject constructor(
                 false
             )
         )
-
     }
 
     override fun onBindViewHolder(holder: ChampionViewHolder, position: Int) {
@@ -58,7 +57,6 @@ class ChampionsRecyclerViewAdapter @Inject constructor(
                     BuildConfig.BASE_URL + IMAGE_URL + it.full
                 Glide.with(binding.root.context).load(imageURL).into(binding.imgProfile)
             }
-
             binding.root.setOnClickListener { onChampionClickListener(champion.id) }
         }
     }
@@ -66,5 +64,4 @@ class ChampionsRecyclerViewAdapter @Inject constructor(
     fun setChampionItemClickListener(listener: ((String) -> Unit)) {
         onChampionClickListener = listener
     }
-
 }

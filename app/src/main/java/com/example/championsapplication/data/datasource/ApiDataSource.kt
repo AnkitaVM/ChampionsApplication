@@ -7,13 +7,14 @@ import com.example.championsapplication.domain.model.Result
 import retrofit2.Response
 import javax.inject.Inject
 
-class ApiDataSource @Inject constructor(private var championsApi: ChampionsApi) {
+class ApiDataSource @Inject constructor(
+    private var championsApi: ChampionsApi
+) {
 
     suspend fun callChampionsService(): Result<List<Champion>> {
         val res = championsApi.getChampionsList()
         return getChampionsFromResponse(res)
     }
-
 
     private fun getChampionsFromResponse(response: Response<ChampionListResponse>): Result<List<Champion>> {
         try {
@@ -29,6 +30,4 @@ class ApiDataSource @Inject constructor(private var championsApi: ChampionsApi) 
             return Result.Error(e.message)
         }
     }
-
-
 }
