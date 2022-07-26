@@ -27,7 +27,6 @@ class ChampionsListViewModelTest {
     @get : Rule
     var mainDispatcherRule = MainDispatcherRule()
 
-
     private lateinit var championsListViewModel: ChampionsListViewModel
 
     @get: Rule

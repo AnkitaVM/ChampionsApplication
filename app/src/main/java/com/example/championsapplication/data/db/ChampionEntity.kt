@@ -6,20 +6,20 @@ import androidx.room.PrimaryKey
 import com.example.championsapplication.domain.model.Champion
 import com.example.championsapplication.domain.model.ChampionImage
 
-@Entity(tableName = TABLE_CHAMPION)
+@Entity(tableName = ChampionTable.TABLE_CHAMPION)
 data class ChampionEntity(
     @PrimaryKey
-    @ColumnInfo(name = COLUMN_ID)
+    @ColumnInfo(name = ChampionTable.COLUMN_ID)
     val id: String,
-    @ColumnInfo(name = COLUMN_KEY)
+    @ColumnInfo(name = ChampionTable.COLUMN_KEY)
     val key: String,
-    @ColumnInfo(name = COLUMN_NAME)
+    @ColumnInfo(name = ChampionTable.COLUMN_NAME)
     val name: String,
-    @ColumnInfo(name = COLUMN_TITLE)
+    @ColumnInfo(name = ChampionTable.COLUMN_TITLE)
     val title: String,
-    @ColumnInfo(name = COLUMN_BLURB)
+    @ColumnInfo(name = ChampionTable.COLUMN_BLURB)
     val blurb: String,
-    @ColumnInfo(name = COLUMN_IMAGE_FULL)
+    @ColumnInfo(name = ChampionTable.COLUMN_IMAGE_FULL)
     val championImagePathFull: String?
 ) {
     companion object {

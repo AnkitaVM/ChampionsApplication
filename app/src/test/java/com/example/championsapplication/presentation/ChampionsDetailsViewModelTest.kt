@@ -28,7 +28,6 @@ class ChampionsDetailsViewModelTest {
     var coroutineRule = MainCoroutineScopeRule()
 
     private lateinit var championsDetailsViewModel: ChampionsDetailsViewModel
-
     private lateinit var championUiModelMapper: ChampionUiModelMapper
 
     @Before
@@ -56,7 +55,6 @@ class ChampionsDetailsViewModelTest {
     }
 
     // Helper
-
     private fun getChampion(num: String): UIChampion {
         return UIChampion(
             num,
@@ -68,4 +66,3 @@ class ChampionsDetailsViewModelTest {
         )
     }
 }
-

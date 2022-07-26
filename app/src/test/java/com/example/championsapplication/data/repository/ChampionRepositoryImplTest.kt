@@ -7,36 +7,38 @@ import com.example.championsapplication.data.datasource.LocalDataSource
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.getResponseInWrappedResultClass
 import com.example.championsapplication.getResponseInWrappedResultClassFromDB
+import io.mockk.Called
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
-
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnitRunner
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@RunWith(MockitoJUnitRunner::class)
 class ChampionRepositoryImplTest {
+    @get:Rule
+    val mockkRule = MockKRule(this)
 
     @get: Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var championRepositoryImpl: ChampionRepositoryImpl
 
-    @Mock
+    @RelaxedMockK
     private lateinit var localDataSource: LocalDataSource
 
-    @Mock
+    @RelaxedMockK
     private lateinit var dbDataSource: DBDataSource
 
-    @Mock
+    @RelaxedMockK
     private lateinit var apiDataSource: ApiDataSource
 
     @Before
@@ -48,69 +50,58 @@ class ChampionRepositoryImplTest {
     @Test
     fun getChampionsList_whenListIsSavedInLocalCache_ListReturnedFromLocalCache() {
         runTest {
-            `when`(localDataSource.getChampionsDataFromLocalCache())
-                .thenReturn(getResponseInWrappedResultClassFromDB())
+            coEvery { localDataSource.getChampionsDataFromLocalCache() } returns getResponseInWrappedResultClassFromDB()
             val list = championRepositoryImpl.getChampions()
             MatcherAssert.assertThat(
                 list.data,
                 CoreMatchers.`is`(getResponseInWrappedResultClassFromDB().data)
             )
         }
-
     }
 
     @Test
     fun getChampionsList_whenListIsSavedInLocalCache_NoInteractioWithDbAndApiObject() {
         runTest {
-            `when`(localDataSource.getChampionsDataFromLocalCache())
-                .thenReturn(getResponseInWrappedResultClassFromDB())
+            coEvery { localDataSource.getChampionsDataFromLocalCache() } returns getResponseInWrappedResultClassFromDB()
             championRepositoryImpl.getChampions()
-            verifyNoInteractions(dbDataSource);
-            verifyNoInteractions(apiDataSource);
+            verify { dbDataSource wasNot Called }
+            verify { apiDataSource wasNot Called }
         }
     }
 
     @Test
     fun getChampionsList_whenListIsSavedInDb_ListReturnedFromDb() {
         runTest {
-            `when`(localDataSource.getChampionsDataFromLocalCache())
-                .thenReturn(Result.Error("No Data in Cache"))
-            `when`(dbDataSource.getAllChampions())
-                .thenReturn(getResponseInWrappedResultClassFromDB())
+            coEvery { localDataSource.getChampionsDataFromLocalCache() } returns Result.Error("No Data in Cache")
+            coEvery { dbDataSource.getAllChampions() } returns getResponseInWrappedResultClassFromDB()
             val list = championRepositoryImpl.getChampions()
-            MatcherAssert.assertThat(
+            Assert.assertEquals(
                 list.data,
-                CoreMatchers.`is`(getResponseInWrappedResultClassFromDB().data)
+                getResponseInWrappedResultClassFromDB().data
             )
         }
-
     }
 
     @Test
     fun getChampionsList_whenListSavedInDb_NoInteractioWithApiObject() {
         runTest {
-            `when`(localDataSource.getChampionsDataFromLocalCache())
-                .thenReturn(Result.Error("No Data in Cache"))
-            `when`(dbDataSource.getAllChampions())
-                .thenReturn(getResponseInWrappedResultClassFromDB())
-            val list = championRepositoryImpl.getChampions()
-            verifyNoInteractions(apiDataSource);
+            coEvery { localDataSource.getChampionsDataFromLocalCache() } returns Result.Error("No Data in Cache")
+            coEvery { dbDataSource.getAllChampions() } returns getResponseInWrappedResultClassFromDB()
+            championRepositoryImpl.getChampions()
+            verify { apiDataSource wasNot Called }
         }
     }
 
     @Test
     fun getChampionsList_whenNoListSavedInLocalAndDb_ListReturnedFromApi() {
         runTest {
-            `when`(localDataSource.getChampionsDataFromLocalCache())
-                .thenReturn(Result.Error("No Data in Cache"))
-            `when`(dbDataSource.getAllChampions())
-                .thenReturn(Result.Error("No Data in Db"))
-            `when`(apiDataSource.callChampionsService())
-                .thenReturn(getResponseInWrappedResultClass())
+            coEvery { localDataSource.getChampionsDataFromLocalCache() } returns Result.Error("No Data in Cache")
+            coEvery { dbDataSource.getAllChampions() } returns Result.Error("No Data in Db")
+            coEvery { apiDataSource.callChampionsService() } returns getResponseInWrappedResultClass()
             val list = championRepositoryImpl.getChampions()
-            MatcherAssert.assertThat(
+            Assert.assertEquals(
                 list.data,
-                CoreMatchers.`is`(getResponseInWrappedResultClass().data)
+                getResponseInWrappedResultClass().data
             )
         }
     }
@@ -119,9 +110,7 @@ class ChampionRepositoryImplTest {
     fun getChampionDetails_IdPassed_dbDatasourceMethodCalled() {
         runTest {
             championRepositoryImpl.getChampionDetails("1")
-            verify(dbDataSource, times(1)).getChampionDetails("1");
+            coVerify { dbDataSource.getChampionDetails("1") }
         }
     }
-
-
 }

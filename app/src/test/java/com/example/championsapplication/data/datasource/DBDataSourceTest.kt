@@ -7,30 +7,33 @@ import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.getChampionEntity
 import com.example.championsapplication.getChampionsEntitiesList
 import com.example.championsapplication.getChampionsList
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit4.MockKRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-import org.mockito.junit.MockitoJUnitRunner
+
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@RunWith(MockitoJUnitRunner::class)
 class DBDataSourceTest {
+
+    @get:Rule
+    val mockkRule = MockKRule(this)
+
     @get: Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var dbDataSource: DBDataSource
 
-    @Mock
+    @RelaxedMockK
     private lateinit var championsDao: ChampionsDao
 
     @Captor
@@ -47,7 +50,11 @@ class DBDataSourceTest {
         runTest {
             val chList = getChampionsList()
             dbDataSource.insertAllChampions(chList)
-            verify(championsDao, times(1)).insertAllChampions(Mockito.anyList());
+            coVerify {
+                championsDao.insertAllChampions(any())
+            }
+
+//            verify(championsDao, times(1)).insertAllChampions(Mockito.anyList());
 
 //            val entities = argCaptor.allValues
 //            assertEquals(chList.size, entities.size)
@@ -58,7 +65,7 @@ class DBDataSourceTest {
     fun getAllChampions_verifyDaoInsertMethodCalled_successListReturned() {
         runTest {
             val passedList = getChampionsEntitiesList()
-            Mockito.`when`(championsDao.getAllChampions()).thenReturn(passedList)
+            coEvery { championsDao.getAllChampions() } returns passedList
             val retured = dbDataSource.getAllChampions()
             assertEquals(retured.data!!.size, passedList.size)
             val returnedList = retured.data!!
@@ -74,7 +81,7 @@ class DBDataSourceTest {
     fun getAllChampions_verifyDaoInsertMethodCalled_emptyListReturnedFromDb() {
         runTest {
             val passedList = getChampionsEntitiesList()
-            Mockito.`when`(championsDao.getAllChampions()).thenReturn(emptyList())
+            coEvery { championsDao.getAllChampions() } returns emptyList()
             val retured = dbDataSource.getAllChampions()
             assertTrue(retured is Result.Error)
         }
@@ -84,8 +91,7 @@ class DBDataSourceTest {
     fun getChampionDetails_verifyGetChampionDetailsDaoMethodCalled_success() {
         runTest {
             dbDataSource.getChampionDetails("1")
-            verify(championsDao, times(1)).getChampionDetails("1");
-
+            coVerify { championsDao.getChampionDetails("1") }
         }
     }
 
@@ -93,8 +99,7 @@ class DBDataSourceTest {
     fun getChampionDetails_verifyGetChampionDetailsDaoMethodCalled_successDetailsReturned() {
         runTest {
             val passedChampionEntity = getChampionEntity("1")
-            Mockito.`when`(championsDao.getChampionDetails(Mockito.anyString()))
-                .thenReturn(passedChampionEntity)
+            coEvery { championsDao.getChampionDetails(any()) } returns passedChampionEntity
             val returnedChampion = dbDataSource.getChampionDetails("1")
             assertEquals(returnedChampion.data!!.id, passedChampionEntity.id)
             assertEquals(returnedChampion.data!!.name, passedChampionEntity.name)
@@ -106,7 +111,7 @@ class DBDataSourceTest {
     @Test
     fun getChampionDetails_nullReturnedFromGetChampionDetailsDaoMethod_ResultErrorReturned() {
         runTest {
-            Mockito.`when`(championsDao.getChampionDetails(Mockito.anyString())).thenReturn(null)
+            coEvery { championsDao.getChampionDetails(any()) } returns null
             val returned = dbDataSource.getChampionDetails("1")
             assertTrue(returned is Result.Error)
         }

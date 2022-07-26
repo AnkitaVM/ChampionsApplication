@@ -1,8 +1,13 @@
 package com.example.championsapplication
 
 import com.example.championsapplication.data.db.ChampionEntity
-import com.example.championsapplication.domain.model.*
+import com.example.championsapplication.domain.model.Champion
+import com.example.championsapplication.domain.model.ChampionImage
+import com.example.championsapplication.domain.model.ChampionListResponse
+import com.example.championsapplication.domain.model.Result
 import com.google.gson.Gson
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody
 import retrofit2.Response
 
 fun getChampionsList(): List<Champion> {
@@ -71,7 +76,12 @@ fun getChampionEntity(num: String): ChampionEntity {
 
 }
 
-//fun getErrorMockResponse(): Response<ChampionListResponse> {
-//    Response<ChampionListResponse>.isSuccessful = false
-//    return Response.error(1, null)
-//}
+fun getErrorMockResponse(): Response<ChampionListResponse> {
+    return Response.error(
+        403,
+        ResponseBody.create(
+            "application/json".toMediaTypeOrNull(),
+            "{\"key\":[\"somestuff\"]}"
+        )
+    )
+}

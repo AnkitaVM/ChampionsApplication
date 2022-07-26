@@ -1,6 +1,5 @@
 package com.example.championsapplication.data.datasource
 
-import com.example.championsapplication.getChampion
 import com.example.championsapplication.getChampionsList
 import org.junit.Assert
 import org.junit.Before
