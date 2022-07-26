@@ -1,5 +1,6 @@
 package com.example.championsapplication.domain.usecases
 
+import com.example.championsapplication.domain.model.ErrorType
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.repository.ChampionsRepository
 import com.example.championsapplication.presentation.uimodels.UIChampion
@@ -17,6 +18,6 @@ class GetChampionDetailsUseCase @Inject constructor(
                 return Result.Success(championUiModelMapper.map(it))
             }
         }
-        return Result.Error("Empty model")
+        return Result.Error(ErrorType.UnknownError)
     }
 }

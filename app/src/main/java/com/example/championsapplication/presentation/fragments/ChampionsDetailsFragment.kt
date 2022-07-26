@@ -15,8 +15,10 @@ import com.example.championsapplication.R
 import com.example.championsapplication.data.api.IMAGE_URL
 import com.example.championsapplication.databinding.FragmentChampionsDetailsBinding
 import com.example.championsapplication.domain.model.Result
+import com.example.championsapplication.presentation.uimodels.ErrorMessageHandler
 import com.example.championsapplication.presentation.viewmodels.ChampionsDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ChampionsDetailsFragment : Fragment() {
@@ -24,6 +26,9 @@ class ChampionsDetailsFragment : Fragment() {
     private lateinit var binding: FragmentChampionsDetailsBinding
     private val championsDetailsViewModel: ChampionsDetailsViewModel by viewModels()
     private val args: ChampionsDetailsFragmentArgs by navArgs()
+
+    @Inject
+    lateinit var errorMessageHandler: ErrorMessageHandler
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,8 +70,11 @@ class ChampionsDetailsFragment : Fragment() {
                 }
                 is Result.Error -> {
                     binding.pbProgress.visibility = View.INVISIBLE
-                    Toast.makeText(context, getString(R.string.error_occurred), Toast.LENGTH_LONG)
-                        .show()
+                    Toast.makeText(
+                        context,
+                        result.errorType?.let { errorMessageHandler.getErrorMessage(it) },
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         })

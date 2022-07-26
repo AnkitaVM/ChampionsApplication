@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.championsapplication.domain.model.ErrorType
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.usecases.GetChampionDetailsUseCase
 import com.example.championsapplication.presentation.uimodels.UIChampion
@@ -27,7 +28,7 @@ class ChampionsDetailsViewModel @Inject constructor(
             _champion.postValue(Result.Loading())
             _champion.postValue(getChampionDetailsUseCase(chId))
         } catch (e: Exception) {
-            _champion.postValue(Result.Error(e.message.toString()))
+            _champion.postValue(Result.Error(ErrorType.UnknownError))
         }
 
     }

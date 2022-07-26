@@ -5,7 +5,6 @@ import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.repository.ChampionsRepository
 import com.example.championsapplication.presentation.uimodels.UIChampion
 import com.example.championsapplication.utils.ListMapper
-import com.example.championsapplication.utils.ListMapperImpl
 import javax.inject.Inject
 
 class GetAllChampionsUseCase @Inject constructor(
@@ -20,7 +19,6 @@ class GetAllChampionsUseCase @Inject constructor(
                 return Result.Success(n)
             }
         }
-        return Result.Error("Empty list")
+        return Result.Error(res.errorType)
     }
 }
-

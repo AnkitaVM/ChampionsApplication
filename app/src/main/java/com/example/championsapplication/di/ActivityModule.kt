@@ -8,6 +8,8 @@ import com.example.championsapplication.data.db.ChampionDatabase
 import com.example.championsapplication.data.db.ChampionsDao
 import com.example.championsapplication.data.db.DATABASE_CHAMPIONS
 import com.example.championsapplication.data.repository.ChampionRepositoryImpl
+import com.example.championsapplication.domain.model.ErrorTypeHandler
+import com.example.championsapplication.domain.model.ErrorTypeHandlerImpl
 import com.example.championsapplication.domain.repository.ChampionsRepository
 import dagger.Module
 import dagger.Provides
@@ -48,5 +50,10 @@ class ActivityModule {
     fun buildDatabaseInstance(context: Context): ChampionDatabase {
         return Room.databaseBuilder(context, ChampionDatabase::class.java, DATABASE_CHAMPIONS)
             .fallbackToDestructiveMigration().build()
+    }
+
+    @Provides
+    fun provideErrorTypeHandler(errorTypeHandlerImpl: ErrorTypeHandlerImpl): ErrorTypeHandler {
+        return errorTypeHandlerImpl
     }
 }

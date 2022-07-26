@@ -15,8 +15,10 @@ import com.example.championsapplication.R
 import com.example.championsapplication.databinding.FragmentChampionsListBinding
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.presentation.adapter.ChampionsRecyclerViewAdapter
+import com.example.championsapplication.presentation.uimodels.ErrorMessageHandler
 import com.example.championsapplication.presentation.viewmodels.ChampionsListViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /**
  * A fragment representing a list of Items.
@@ -26,6 +28,9 @@ class ChampionsListFragment : Fragment() {
     private val championsViewModel: ChampionsListViewModel by viewModels()
     lateinit var championsAdapter: ChampionsRecyclerViewAdapter
     private lateinit var binding: FragmentChampionsListBinding
+
+    @Inject
+    lateinit var errorMessageHandler: ErrorMessageHandler
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,8 +63,11 @@ class ChampionsListFragment : Fragment() {
                 }
                 is Result.Error -> {
                     binding.pbProgress.visibility = View.INVISIBLE
-                    Toast.makeText(context, getString(R.string.error_occurred), Toast.LENGTH_LONG)
-                        .show()
+                    Toast.makeText(
+                        context,
+                        result.errorType?.let { errorMessageHandler.getErrorMessage(it) },
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         })

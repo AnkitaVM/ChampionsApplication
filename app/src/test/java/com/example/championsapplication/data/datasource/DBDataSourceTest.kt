@@ -3,6 +3,7 @@ package com.example.championsapplication.data.datasource
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.championsapplication.data.db.ChampionEntity
 import com.example.championsapplication.data.db.ChampionsDao
+import com.example.championsapplication.domain.model.ErrorTypeHandlerImpl
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.getChampionEntity
 import com.example.championsapplication.getChampionsEntitiesList
@@ -41,7 +42,7 @@ class DBDataSourceTest {
     @Before
     fun setUp() {
         dbDataSource =
-            DBDataSource(championsDao, ChampionEntityModelMapper(), ChampionModelMapper())
+            DBDataSource(championsDao, ChampionEntityModelMapper(), ChampionModelMapper(), ErrorTypeHandlerImpl())
     }
 
     @Test

@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.championsapplication.data.datasource.ApiDataSource
 import com.example.championsapplication.data.datasource.DBDataSource
 import com.example.championsapplication.data.datasource.LocalDataSource
+import com.example.championsapplication.domain.model.ErrorType
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.getResponseInWrappedResultClass
 import com.example.championsapplication.getResponseInWrappedResultClassFromDB
@@ -72,7 +73,7 @@ class ChampionRepositoryImplTest {
     @Test
     fun getChampionsList_whenListIsSavedInDb_ListReturnedFromDb() {
         runTest {
-            coEvery { localDataSource.getChampionsDataFromLocalCache() } returns Result.Error("No Data in Cache")
+            coEvery { localDataSource.getChampionsDataFromLocalCache() } returns Result.Error(ErrorType.DataError)
             coEvery { dbDataSource.getAllChampions() } returns getResponseInWrappedResultClassFromDB()
             val list = championRepositoryImpl.getChampions()
             Assert.assertEquals(
@@ -85,7 +86,7 @@ class ChampionRepositoryImplTest {
     @Test
     fun getChampionsList_whenListSavedInDb_NoInteractioWithApiObject() {
         runTest {
-            coEvery { localDataSource.getChampionsDataFromLocalCache() } returns Result.Error("No Data in Cache")
+            coEvery { localDataSource.getChampionsDataFromLocalCache() } returns Result.Error(ErrorType.DataError)
             coEvery { dbDataSource.getAllChampions() } returns getResponseInWrappedResultClassFromDB()
             championRepositoryImpl.getChampions()
             verify { apiDataSource wasNot Called }
@@ -95,8 +96,8 @@ class ChampionRepositoryImplTest {
     @Test
     fun getChampionsList_whenNoListSavedInLocalAndDb_ListReturnedFromApi() {
         runTest {
-            coEvery { localDataSource.getChampionsDataFromLocalCache() } returns Result.Error("No Data in Cache")
-            coEvery { dbDataSource.getAllChampions() } returns Result.Error("No Data in Db")
+            coEvery { localDataSource.getChampionsDataFromLocalCache() } returns Result.Error(ErrorType.DataError)
+            coEvery { dbDataSource.getAllChampions() } returns Result.Error(ErrorType.DataError)
             coEvery { apiDataSource.callChampionsService() } returns getResponseInWrappedResultClass()
             val list = championRepositoryImpl.getChampions()
             Assert.assertEquals(

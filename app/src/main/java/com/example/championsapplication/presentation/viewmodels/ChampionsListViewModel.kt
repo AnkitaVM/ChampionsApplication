@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.championsapplication.domain.model.ErrorType
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.usecases.GetAllChampionsUseCase
 import com.example.championsapplication.presentation.uimodels.UIChampion
@@ -29,7 +30,7 @@ class ChampionsListViewModel @Inject constructor(
                 val championsList = getAllChampionsUseCase()
                 _champions.postValue(championsList)
             } catch (e: Exception) {
-                _champions.postValue(Result.Error(e.message.toString()))
+                _champions.postValue(Result.Error(ErrorType.UnknownError))
             }
         }
 
