@@ -2,7 +2,7 @@ package com.example.championsapplication
 
 import com.example.championsapplication.data.db.ChampionEntity
 import com.example.championsapplication.domain.model.Champion
-import com.example.championsapplication.domain.model.UIChampionImage
+import com.example.championsapplication.domain.model.ChampionImage
 import com.example.championsapplication.domain.model.ChampionListResponse
 import com.example.championsapplication.domain.model.Result
 import com.google.gson.Gson
@@ -22,7 +22,7 @@ fun getChampion(num: String): Champion {
         "name1$num",
         "title1$num",
         "blurb1$num",
-        UIChampionImage("full1$num", "", "")
+        ChampionImage("full1$num", "", "")
     )
 
 }

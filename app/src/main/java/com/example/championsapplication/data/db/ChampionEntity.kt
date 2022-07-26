@@ -22,18 +22,18 @@ data class ChampionEntity(
     @ColumnInfo(name = ChampionTable.COLUMN_IMAGE_FULL)
     val championImagePathFull: String?
 ) {
-    companion object {
-        fun fromChampionModel(champion: Champion) = ChampionEntity(
-            champion.id, champion.key, champion.name, champion.title, champion.blurb,
-            champion.championImage?.full
-        )
-    }
-
-    fun toChampionModel(): Champion {
-        var chImage: ChampionImage? = null
-        championImagePathFull?.let {
-            chImage = ChampionImage(it, "", "")
-        }
-        return Champion(id, key, name, title, blurb, chImage)
-    }
+//    companion object {
+//        fun fromChampionModel(champion: Champion) = ChampionEntity(
+//            champion.id, champion.key, champion.name, champion.title, champion.blurb,
+//            champion.championImage?.full
+//        )
+//    }
+//
+//    fun toChampionModel(): Champion {
+//        var chImage: ChampionImage? = null
+//        championImagePathFull?.let {
+//            chImage = ChampionImage(it, "", "")
+//        }
+//        return Champion(id, key, name, title, blurb, chImage)
+//    }
 }
