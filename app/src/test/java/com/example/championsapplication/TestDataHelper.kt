@@ -1,10 +1,7 @@
 package com.example.championsapplication
 
 import com.example.championsapplication.data.db.ChampionEntity
-import com.example.championsapplication.domain.model.Champion
-import com.example.championsapplication.domain.model.ChampionImage
-import com.example.championsapplication.domain.model.ChampionListResponse
-import com.example.championsapplication.domain.model.Result
+import com.example.championsapplication.domain.model.*
 import com.google.gson.Gson
 import retrofit2.Response
 

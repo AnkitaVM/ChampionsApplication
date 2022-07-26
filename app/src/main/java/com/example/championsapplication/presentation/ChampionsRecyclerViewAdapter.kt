@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.championsapplication.BuildConfig
 import com.example.championsapplication.data.api.IMAGE_URL
 import com.example.championsapplication.databinding.LayoutItemChampionsListBinding
-import com.example.championsapplication.domain.model.Champion
+import com.example.championsapplication.presentation.uimodels.UIChampion
 import javax.inject.Inject
 
 class ChampionsRecyclerViewAdapter @Inject constructor(
@@ -17,12 +17,12 @@ class ChampionsRecyclerViewAdapter @Inject constructor(
 
     private lateinit var onChampionClickListener: ((String) -> Unit)
 
-    private val callback = object : DiffUtil.ItemCallback<Champion>() {
-        override fun areItemsTheSame(oldItem: Champion, newItem: Champion): Boolean {
+    private val callback = object : DiffUtil.ItemCallback<UIChampion>() {
+        override fun areItemsTheSame(oldItem: UIChampion, newItem: UIChampion): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Champion, newItem: Champion): Boolean {
+        override fun areContentsTheSame(oldItem: UIChampion, newItem: UIChampion): Boolean {
             return oldItem == newItem
         }
     }
@@ -50,7 +50,7 @@ class ChampionsRecyclerViewAdapter @Inject constructor(
     inner class ChampionViewHolder(private val binding: LayoutItemChampionsListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bindView(champion: Champion) {
+        fun bindView(champion: UIChampion) {
             binding.txtName.text = champion.name
             binding.txtTitle.text = champion.title
             champion.championImage?.let {

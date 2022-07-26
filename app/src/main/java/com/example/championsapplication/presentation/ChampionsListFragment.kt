@@ -25,7 +25,6 @@ import javax.inject.Inject
 class ChampionsListFragment : Fragment() {
     private val championsViewModel: ChampionsListViewModel by viewModels()
 
-    @Inject
     lateinit var championsAdapter: ChampionsRecyclerViewAdapter
     private lateinit var binding: FragmentChampionsListBinding
 
@@ -69,7 +68,7 @@ class ChampionsListFragment : Fragment() {
     }
 
     private fun setChampionsAdapter() {
-
+        championsAdapter = ChampionsRecyclerViewAdapter()
         binding.rvChampions.apply {
             layoutManager = LinearLayoutManager(context)
             championsAdapter.setChampionItemClickListener { selectedChampionId ->

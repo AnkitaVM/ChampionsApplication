@@ -7,21 +7,24 @@ import androidx.lifecycle.viewModelScope
 import com.example.championsapplication.domain.model.Champion
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.usecases.GetAllChampionsUseCase
+import com.example.championsapplication.presentation.uimodels.UIChampion
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ChampionsListViewModel @Inject constructor(private var getAllChampionsUseCase: GetAllChampionsUseCase) :
-    ViewModel() {
+class ChampionsListViewModel @Inject constructor(
+    private val getAllChampionsUseCase: GetAllChampionsUseCase,
+    private val dispatcher: CoroutineDispatcher
+) : ViewModel() {
 
-    private val _champions: MutableLiveData<Result<List<Champion>>> = MutableLiveData()
-    val champions: LiveData<Result<List<Champion>>> get() = _champions
+    private val _champions: MutableLiveData<Result<List<UIChampion>>> = MutableLiveData()
+    val champions: LiveData<Result<List<UIChampion>>> get() = _champions
 
 
     fun getAllChampions() =
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             _champions.postValue(Result.Loading())
             try {
                 val championsList = getAllChampionsUseCase()

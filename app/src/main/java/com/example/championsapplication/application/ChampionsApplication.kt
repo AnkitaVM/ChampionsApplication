@@ -1,4 +1,4 @@
-package com.example.championsapplication.presentation
+package com.example.championsapplication.application
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
