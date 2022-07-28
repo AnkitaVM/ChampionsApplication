@@ -7,10 +7,11 @@ import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.getChampionEntity
 import com.example.championsapplication.getChampionsEntitiesList
 import com.example.championsapplication.getChampionsList
-import com.example.championsapplication.domain.mappers.ChampionEntityModelMapper
-import com.example.championsapplication.domain.mappers.ChampionModelMapper
+import com.example.championsapplication.domain.model.ErrorType
+import com.example.championsapplication.getChampion
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.junit4.MockKRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -36,26 +37,22 @@ class DBDataSourceTest {
     @RelaxedMockK
     private lateinit var championsDao: ChampionsDao
 
+    @MockK
+    private lateinit var errorTypeHandler: ErrorTypeHandlerImpl
+
     @Before
     fun setUp() {
-        dbDataSource =
-            DBDataSource(championsDao, ChampionEntityModelMapper(), ChampionModelMapper(), ErrorTypeHandlerImpl())
+        dbDataSource = DBDataSource(championsDao, errorTypeHandler)
     }
 
     @Test
     fun insertAllChampions_verifyDaoInsertMethodCalled_successMethodCalled() {
-
         runTest {
             val chList = getChampionsList()
             dbDataSource.insertAllChampions(chList)
             coVerify {
                 championsDao.insertAllChampions(any())
             }
-
-//            verify(championsDao, times(1)).insertAllChampions(Mockito.anyList());
-
-//            val entities = argCaptor.allValues
-//            assertEquals(chList.size, entities.size)
         }
     }
 
@@ -64,26 +61,37 @@ class DBDataSourceTest {
         runTest {
             val passedList = getChampionsEntitiesList()
             coEvery { championsDao.getAllChampions() } returns passedList
-            val retured = dbDataSource.getAllChampions()
-            assertEquals(retured.data!!.size, passedList.size)
-            val returnedList = retured.data!!
+            val returned = dbDataSource.getAllChampions()
+            val returnedList = returned.data!!
+            assertEquals(returnedList.size, passedList.size)
             for (i in passedList.indices) {
                 assertEquals(returnedList[i].id, passedList[i].id)
                 assertEquals(returnedList[i].name, passedList[i].name)
             }
-
         }
     }
 
     @Test
     fun getAllChampions_verifyDaoInsertMethodCalled_emptyListReturnedFromDb() {
         runTest {
-            val passedList = getChampionsEntitiesList()
             coEvery { championsDao.getAllChampions() } returns emptyList()
-            val retured = dbDataSource.getAllChampions()
-            assertTrue(retured is Result.Error)
+            val returned = dbDataSource.getAllChampions()
+            assertTrue(returned is Result.Error)
+            assertTrue(returned.errorType is ErrorType.DataError)
         }
     }
+
+    @Test
+    fun getAllChampions_exceptionThrown_ResultUnknownErrorReturned() {
+        runTest {
+            coEvery { championsDao.getAllChampions() } throws Exception("test exception")
+            coEvery { errorTypeHandler.getError(any()) } returns ErrorType.UnknownError
+            val returned = dbDataSource.getAllChampions()
+            assertTrue(returned is Result.Error)
+            assertTrue(returned.errorType is ErrorType.UnknownError)
+        }
+    }
+
 
     @Test
     fun getChampionDetails_verifyGetChampionDetailsDaoMethodCalled_success() {
@@ -98,11 +106,11 @@ class DBDataSourceTest {
         runTest {
             val passedChampionEntity = getChampionEntity("1")
             coEvery { championsDao.getChampionDetails(any()) } returns passedChampionEntity
+//            coEvery { championModelMapper.map(any()) } returns getChampion("1")
             val returnedChampion = dbDataSource.getChampionDetails("1")
             assertEquals(returnedChampion.data!!.id, passedChampionEntity.id)
             assertEquals(returnedChampion.data!!.name, passedChampionEntity.name)
             assertEquals(returnedChampion.data!!.title, passedChampionEntity.title)
-
         }
     }
 
@@ -112,7 +120,18 @@ class DBDataSourceTest {
             coEvery { championsDao.getChampionDetails(any()) } returns null
             val returned = dbDataSource.getChampionDetails("1")
             assertTrue(returned is Result.Error)
+            assertTrue(returned.errorType is ErrorType.DataError)
         }
     }
 
+    @Test
+    fun getChampionDetails_exceptionThrown_ResultUnknownErrorReturned() {
+        runTest {
+            coEvery { championsDao.getChampionDetails(any()) } throws Exception("test exception")
+            coEvery { errorTypeHandler.getError(any()) } returns ErrorType.UnknownError
+            val returned = dbDataSource.getChampionDetails("1")
+            assertTrue(returned is Result.Error)
+            assertTrue(returned.errorType is ErrorType.UnknownError)
+        }
+    }
 }

@@ -17,6 +17,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.lang.Exception
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ChampionsListViewModelTest {
@@ -97,6 +98,19 @@ class ChampionsListViewModelTest {
     fun getAllChampions_championListViewModel_UnknownErrorReturned() {
         runTest {
             coEvery { getAllChampionsUseCase() } returns getUIChampionDetailsResultUnknownError()
+            championsListViewModel.getAllChampions()
+            advanceUntilIdle()
+            val champions = championsListViewModel.champions.getOrAwaitValue()
+            Assert.assertTrue(champions is Result.Error)
+            Assert.assertNull(champions.data)
+            Assert.assertTrue(champions.errorType is ErrorType.UnknownError)
+        }
+    }
+
+    @Test
+    fun getAllChampions_exceptionThrown_UnknownErrorReturned() {
+        runTest {
+            coEvery { getAllChampionsUseCase() } throws Exception("Test exception")
             championsListViewModel.getAllChampions()
             advanceUntilIdle()
             val champions = championsListViewModel.champions.getOrAwaitValue()

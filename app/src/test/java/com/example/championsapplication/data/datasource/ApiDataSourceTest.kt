@@ -1,19 +1,18 @@
 package com.example.championsapplication.data.datasource
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.example.championsapplication.*
 import com.example.championsapplication.data.api.ApiCall
 import com.example.championsapplication.data.api.ChampionsApi
 import com.example.championsapplication.domain.model.ChampionListResponse
 import com.example.championsapplication.domain.model.ErrorTypeHandlerImpl
 import com.example.championsapplication.domain.model.Result
-import com.example.championsapplication.getErrorMockResponse
-import com.example.championsapplication.getResponseInWrappedResultClass
-import com.example.championsapplication.getSuccessMockResponse
-import com.example.championsapplication.getSuccessMockResponseWrappedInResult
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.impl.annotations.SpyK
 import io.mockk.junit4.MockKRule
+import io.mockk.spyk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
@@ -31,19 +30,19 @@ class ApiDataSourceTest {
     @get: Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var apiDataSource: ApiDataSource
-
-    @RelaxedMockK
+    @MockK
     private lateinit var championsApi: ChampionsApi
 
-    private lateinit var apiCall: ApiCall
+    @MockK
+    private lateinit var errorTypeHandlerImpl: ErrorTypeHandlerImpl
 
+    private lateinit var apiCall: ApiCall
+    private lateinit var apiDataSource: ApiDataSource
 
     @Before
     fun setUp() {
-        apiCall = ApiCall(ErrorTypeHandlerImpl())
-        apiDataSource =
-            ApiDataSource(championsApi, apiCall, ErrorTypeHandlerImpl())
+        apiCall = ApiCall(errorTypeHandlerImpl)
+        apiDataSource = ApiDataSource(championsApi, apiCall, errorTypeHandlerImpl)
     }
 
     @Test

@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody
 import retrofit2.Response
+import retrofit2.Response.success
 
 fun getChampionsList(): List<Champion> {
     val championsList = mutableListOf<Champion>()
@@ -30,7 +31,7 @@ fun getChampion(num: String): Champion {
 
 fun getSuccessMockResponse(): Response<ChampionListResponse> {
     val championListResponse = getChampionListResponseModel()
-    return Response.success(championListResponse)
+    return success(championListResponse)
 }
 
 fun getSuccessMockResponseWrappedInResult(): Result<ChampionListResponse> {
@@ -140,4 +141,11 @@ fun getUIChampionsList(): List<UIChampion> {
 
 fun getUIChampionListResultSuccess(): Result<List<UIChampion>> {
     return Result.Success(getUIChampionsList())
+}
+
+fun getChampionBrokenMockResponseModel(): Response<ChampionListResponse> {
+    val mockResponse =
+        "{\"type\":\"champion\",\"format\":\"standAloneComplex\",\"version\":\"12.9.1\",\"data\":}"
+    val championListResponse = Gson().fromJson(mockResponse, ChampionListResponse::class.java)
+    return Response.success(championListResponse)
 }

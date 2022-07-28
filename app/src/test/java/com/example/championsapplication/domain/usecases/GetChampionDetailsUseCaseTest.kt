@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.championsapplication.*
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.repository.ChampionsRepository
-import com.example.championsapplication.domain.mappers.ChampionUiModelMapper
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule
@@ -28,21 +27,24 @@ class GetChampionDetailsUseCaseTest {
     @MockK
     private lateinit var repository: ChampionsRepository
 
-    @MockK
-    private lateinit var championUiModelMapper: ChampionUiModelMapper
+//    @MockK
+//    private lateinit var championUiModelMapper: ChampionUiModelMapper
 
     private lateinit var getChampionDetailsUseCase: GetChampionDetailsUseCase
 
     @Before
     fun setUp() {
-        getChampionDetailsUseCase = GetChampionDetailsUseCase(repository, championUiModelMapper)
+        getChampionDetailsUseCase = GetChampionDetailsUseCase(
+            repository
+//            , championUiModelMapper
+        )
     }
 
     @Test
     fun getAllChampions_GetChampionsDetailsUseCase_successUIChampionsDetailsModelReturned() {
         runTest {
             coEvery { repository.getChampionDetails("1") } returns getChampionDetailsResultSuccess()
-            coEvery { championUiModelMapper.map(any()) } returns getUIChampionModel("1")
+//            coEvery { championUiModelMapper.map(any()) } returns getUIChampionModel("1")
             val champions = getChampionDetailsUseCase("1")
             assertTrue(champions is Result.Success)
             assertEquals(champions.data, getUIChampionModel("1"))

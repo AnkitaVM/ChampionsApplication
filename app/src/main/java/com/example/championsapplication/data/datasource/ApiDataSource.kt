@@ -21,13 +21,6 @@ class ApiDataSource @Inject constructor(
             res.data?.let { return getChampionsFromResponse(it) }
         }
         return Result.Error(res.errorType)
-//        return Result.Error(res.errorType)
-//        try {
-//            val res = championsApi.getChampionsList()
-//            return getChampionsFromResponse(res)
-//        } catch (e: Exception) {
-//            return Result.getResultError(e.message)
-//        }
     }
 
     private fun getChampionsFromResponse(response: ChampionListResponse): Result<List<Champion>> {
@@ -39,20 +32,4 @@ class ApiDataSource @Inject constructor(
             Result.Error(errorTypeHandler.getError(e))
         }
     }
-
-//    private fun getChampionsFromResponse1(response: Response<ChampionListResponse>): Result<List<Champion>> {
-//        try {
-//            if (response.isSuccessful) {
-//                response.body()?.let { apiRes ->
-//                    val ch = mutableListOf<Champion>()
-//                    ch.addAll(apiRes.championsMap.values)
-//                    return Result.Success(ch)
-////                    return Result.getResultSuccess(ch)
-//                }
-//            }
-//            return Result.Error(response.message())
-//        } catch (e: Exception) {
-//            return Result.Error(e.message)
-//        }
-//    }
 }

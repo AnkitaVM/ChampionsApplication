@@ -24,7 +24,7 @@ class ChampionsDetailsViewModelTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @get: Rule
-    var coroutineRule = MainCoroutineScopeRule()
+    var coroutineRule = MainDispatcherRule()
 
     @get:Rule
     val mockkRule = MockKRule(this)
@@ -38,7 +38,7 @@ class ChampionsDetailsViewModelTest {
     fun setUp() {
         championsDetailsViewModel =
             ChampionsDetailsViewModel(
-                getChampionDetailsUseCase, coroutineRule.dispatcher
+                getChampionDetailsUseCase, coroutineRule.testDispatcher
             )
     }
 
@@ -97,6 +97,19 @@ class ChampionsDetailsViewModelTest {
     fun getChampionDetails_championDetailsVM_UnknownErrorReturned() {
         runTest {
             coEvery { getChampionDetailsUseCase("1") } returns getUIChampionDetailsResultUnknownError()
+            championsDetailsViewModel.getChampionDetails("1")
+            advanceUntilIdle()
+            val champion = championsDetailsViewModel.champion.getOrAwaitValue()
+            Assert.assertTrue(champion is Result.Error)
+            Assert.assertNull(champion.data)
+            Assert.assertTrue(champion.errorType is ErrorType.UnknownError)
+        }
+    }
+
+    @Test
+    fun getChampionDetails_exceptionThrown_UnknownErrorReturned() {
+        runTest {
+            coEvery { getChampionDetailsUseCase("1") } throws Exception("Test Exception")
             championsDetailsViewModel.getChampionDetails("1")
             advanceUntilIdle()
             val champion = championsDetailsViewModel.champion.getOrAwaitValue()

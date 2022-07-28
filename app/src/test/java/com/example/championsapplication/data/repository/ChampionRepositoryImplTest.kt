@@ -53,9 +53,9 @@ class ChampionRepositoryImplTest {
         runTest {
             coEvery { localDataSource.getChampionsDataFromLocalCache() } returns getResponseInWrappedResultClassFromDB()
             val list = championRepositoryImpl.getChampions()
-            MatcherAssert.assertThat(
+            Assert.assertEquals(
                 list.data,
-                CoreMatchers.`is`(getResponseInWrappedResultClassFromDB().data)
+                getResponseInWrappedResultClassFromDB().data
             )
         }
     }
@@ -73,7 +73,9 @@ class ChampionRepositoryImplTest {
     @Test
     fun getChampionsList_whenListIsSavedInDb_ListReturnedFromDb() {
         runTest {
-            coEvery { localDataSource.getChampionsDataFromLocalCache() } returns Result.Error(ErrorType.DataError)
+            coEvery { localDataSource.getChampionsDataFromLocalCache() } returns Result.Error(
+                ErrorType.DataError
+            )
             coEvery { dbDataSource.getAllChampions() } returns getResponseInWrappedResultClassFromDB()
             val list = championRepositoryImpl.getChampions()
             Assert.assertEquals(
@@ -86,7 +88,9 @@ class ChampionRepositoryImplTest {
     @Test
     fun getChampionsList_whenListSavedInDb_NoInteractioWithApiObject() {
         runTest {
-            coEvery { localDataSource.getChampionsDataFromLocalCache() } returns Result.Error(ErrorType.DataError)
+            coEvery { localDataSource.getChampionsDataFromLocalCache() } returns Result.Error(
+                ErrorType.DataError
+            )
             coEvery { dbDataSource.getAllChampions() } returns getResponseInWrappedResultClassFromDB()
             championRepositoryImpl.getChampions()
             verify { apiDataSource wasNot Called }
@@ -96,7 +100,9 @@ class ChampionRepositoryImplTest {
     @Test
     fun getChampionsList_whenNoListSavedInLocalAndDb_ListReturnedFromApi() {
         runTest {
-            coEvery { localDataSource.getChampionsDataFromLocalCache() } returns Result.Error(ErrorType.DataError)
+            coEvery { localDataSource.getChampionsDataFromLocalCache() } returns Result.Error(
+                ErrorType.DataError
+            )
             coEvery { dbDataSource.getAllChampions() } returns Result.Error(ErrorType.DataError)
             coEvery { apiDataSource.callChampionsService() } returns getResponseInWrappedResultClass()
             val list = championRepositoryImpl.getChampions()
