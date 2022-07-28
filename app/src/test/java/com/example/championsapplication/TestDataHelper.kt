@@ -1,10 +1,9 @@
 package com.example.championsapplication
 
 import com.example.championsapplication.data.db.ChampionEntity
-import com.example.championsapplication.domain.model.Champion
-import com.example.championsapplication.domain.model.ChampionImage
-import com.example.championsapplication.domain.model.ChampionListResponse
-import com.example.championsapplication.domain.model.Result
+import com.example.championsapplication.domain.model.*
+import com.example.championsapplication.presentation.uimodels.UIChampion
+import com.example.championsapplication.presentation.uimodels.UIChampionImage
 import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody
@@ -89,4 +88,56 @@ fun getErrorMockResponse(): Response<ChampionListResponse> {
             "{\"key\":[\"somestuff\"]}"
         )
     )
+}
+
+fun getChampionDetailsResultSuccess(): Result<Champion> {
+    return Result.Success(getChampion("1"))
+}
+
+fun getUIChampionDetailsResultSuccess(): Result<UIChampion> {
+    return Result.Success(getUIChampionModel("1"))
+}
+
+fun <T> getUIChampionDetailsResultError(errorType: ErrorType): Result<T> {
+    return Result.Error(errorType)
+}
+
+fun <T> getUIChampionDetailsResultDataError(): Result<T> {
+    return getUIChampionDetailsResultError(ErrorType.DataError)
+}
+
+fun <T> getUIChampionDetailsResultServerError(): Result<T> {
+    return getUIChampionDetailsResultError(ErrorType.ServerError)
+}
+
+fun <T> getUIChampionDetailsResultNetworkError(): Result<T> {
+    return getUIChampionDetailsResultError(ErrorType.NetworkError)
+}
+
+fun <T> getUIChampionDetailsResultUnknownError(): Result<T> {
+    return getUIChampionDetailsResultError(ErrorType.UnknownError)
+}
+
+fun getUIChampionModel(num: String): UIChampion {
+    return UIChampion(
+        num,
+        "key$num",
+        "name1$num",
+        "title1$num",
+        "blurb1$num",
+        UIChampionImage("full1$num", "", "")
+    )
+}
+
+fun getUIChampionsList(): List<UIChampion> {
+    val championsList = mutableListOf<UIChampion>()
+    val championOne = getUIChampionModel("1")
+    val championTwo = getUIChampionModel("2")
+    championsList.add(championOne)
+    championsList.add(championTwo)
+    return championsList
+}
+
+fun getUIChampionListResultSuccess(): Result<List<UIChampion>> {
+    return Result.Success(getUIChampionsList())
 }

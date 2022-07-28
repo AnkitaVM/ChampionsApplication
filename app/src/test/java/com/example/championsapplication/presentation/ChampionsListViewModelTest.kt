@@ -2,17 +2,14 @@ package com.example.championsapplication.presentation
 
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.championsapplication.MainDispatcherRule
-import com.example.championsapplication.data.repository.FakeChampionRepositoryImpl
+import com.example.championsapplication.*
+import com.example.championsapplication.domain.model.ErrorType
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.usecases.GetAllChampionsUseCase
-import com.example.championsapplication.getOrAwaitValue
-import com.example.championsapplication.presentation.uimodels.UIChampion
-import com.example.championsapplication.presentation.uimodels.UIChampionImage
 import com.example.championsapplication.presentation.viewmodels.ChampionsListViewModel
-import com.example.championsapplication.utils.ChampionImageUIModelMapper
-import com.example.championsapplication.utils.ChampionUiModelMapper
-import com.example.championsapplication.utils.ListMapperImpl
+import io.mockk.coEvery
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit4.MockKRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -27,44 +24,85 @@ class ChampionsListViewModelTest {
     @get : Rule
     var mainDispatcherRule = MainDispatcherRule()
 
-    private lateinit var championsListViewModel: ChampionsListViewModel
+    @get:Rule
+    val mockkRule = MockKRule(this)
 
     @get: Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    @MockK
+    private lateinit var getAllChampionsUseCase: GetAllChampionsUseCase
+
+    private lateinit var championsListViewModel: ChampionsListViewModel
+
     @Before
     fun setUp() {
-        val repositoryImpl = FakeChampionRepositoryImpl()
         championsListViewModel = ChampionsListViewModel(
-            GetAllChampionsUseCase(
-                repositoryImpl,
-                ListMapperImpl(ChampionUiModelMapper(ChampionImageUIModelMapper()))
-            ), mainDispatcherRule.testDispatcher
+            getAllChampionsUseCase, mainDispatcherRule.testDispatcher
         )
     }
 
     @Test
     fun getAllChampions_championListViewModel_valueStoredInField() {
-
         runTest {
+            coEvery { getAllChampionsUseCase() } returns getUIChampionListResultSuccess()
             championsListViewModel.getAllChampions()
             advanceUntilIdle()
             val champions = championsListViewModel.champions.getOrAwaitValue()
             Assert.assertTrue(champions is Result.Success)
-            Assert.assertEquals(champions.data, getChampionsList())
+            Assert.assertEquals(champions.data, getUIChampionsList())
         }
-
     }
 
-    /* Helper */
-    private fun getChampionsList(): List<UIChampion> {
-        val championsList = mutableListOf<UIChampion>()
-        val championOne =
-            UIChampion("1", "key1", "name1", "title1", "blurb1", UIChampionImage("full1", "", ""))
-        val championTwo =
-            UIChampion("2", "key2", "name2", "title2", "blurb2", UIChampionImage("full2", "", ""))
-        championsList.add(championOne)
-        championsList.add(championTwo)
-        return championsList
+    @Test
+    fun getAllChampions_championListViewModel_DataErrorReturned() {
+        runTest {
+            coEvery { getAllChampionsUseCase() } returns getUIChampionDetailsResultDataError()
+            championsListViewModel.getAllChampions()
+            advanceUntilIdle()
+            val champions = championsListViewModel.champions.getOrAwaitValue()
+            Assert.assertTrue(champions is Result.Error)
+            Assert.assertNull(champions.data)
+            Assert.assertTrue(champions.errorType is ErrorType.DataError)
+        }
+    }
+
+    @Test
+    fun getAllChampions_championListViewModel_ServerErrorReturned() {
+        runTest {
+            coEvery { getAllChampionsUseCase() } returns getUIChampionDetailsResultServerError()
+            championsListViewModel.getAllChampions()
+            advanceUntilIdle()
+            val champions = championsListViewModel.champions.getOrAwaitValue()
+            Assert.assertTrue(champions is Result.Error)
+            Assert.assertNull(champions.data)
+            Assert.assertTrue(champions.errorType is ErrorType.ServerError)
+        }
+    }
+
+    @Test
+    fun getAllChampions_championListViewModel_NetworkErrorReturned() {
+        runTest {
+            coEvery { getAllChampionsUseCase() } returns getUIChampionDetailsResultNetworkError()
+            championsListViewModel.getAllChampions()
+            advanceUntilIdle()
+            val champions = championsListViewModel.champions.getOrAwaitValue()
+            Assert.assertTrue(champions is Result.Error)
+            Assert.assertNull(champions.data)
+            Assert.assertTrue(champions.errorType is ErrorType.NetworkError)
+        }
+    }
+
+    @Test
+    fun getAllChampions_championListViewModel_UnknownErrorReturned() {
+        runTest {
+            coEvery { getAllChampionsUseCase() } returns getUIChampionDetailsResultUnknownError()
+            championsListViewModel.getAllChampions()
+            advanceUntilIdle()
+            val champions = championsListViewModel.champions.getOrAwaitValue()
+            Assert.assertTrue(champions is Result.Error)
+            Assert.assertNull(champions.data)
+            Assert.assertTrue(champions.errorType is ErrorType.UnknownError)
+        }
     }
 }
