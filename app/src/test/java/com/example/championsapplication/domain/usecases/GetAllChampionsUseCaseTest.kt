@@ -8,7 +8,7 @@ import com.example.championsapplication.getResponseInWrappedResultClass
 import com.example.championsapplication.getUIChampionDetailsResultDataError
 import com.example.championsapplication.getUIChampionsList
 import com.example.championsapplication.presentation.uimodels.UIChampion
-import com.example.championsapplication.utils.ListMapper
+import com.example.championsapplication.domain.mappers.ListMapper
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule

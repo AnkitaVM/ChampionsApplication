@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.championsapplication.*
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.repository.ChampionsRepository
-import com.example.championsapplication.utils.ChampionUiModelMapper
+import com.example.championsapplication.domain.mappers.ChampionUiModelMapper
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule

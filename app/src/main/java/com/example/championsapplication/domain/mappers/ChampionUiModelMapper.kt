@@ -1,4 +1,4 @@
-package com.example.championsapplication.utils
+package com.example.championsapplication.domain.mappers
 
 import com.example.championsapplication.domain.model.Champion
 import com.example.championsapplication.presentation.uimodels.UIChampion

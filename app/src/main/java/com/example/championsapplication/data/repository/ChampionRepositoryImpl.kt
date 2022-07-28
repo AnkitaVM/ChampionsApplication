@@ -6,8 +6,6 @@ import com.example.championsapplication.data.datasource.LocalDataSource
 import com.example.championsapplication.domain.model.Champion
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.repository.ChampionsRepository
-import com.example.championsapplication.presentation.uimodels.UIChampion
-import com.example.championsapplication.utils.ListMapperImpl
 import javax.inject.Inject
 
 class ChampionRepositoryImpl @Inject constructor(

@@ -1,4 +1,4 @@
-package com.example.championsapplication.utils
+package com.example.championsapplication.domain.mappers
 
 class ListMapperImpl<I, O>(
     private val mapper: Mapper<I, O>

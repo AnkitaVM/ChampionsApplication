@@ -1,4 +1,4 @@
-package com.example.championsapplication.utils
+package com.example.championsapplication.domain.mappers
 
 import com.example.championsapplication.data.db.ChampionEntity
 import com.example.championsapplication.domain.model.Champion

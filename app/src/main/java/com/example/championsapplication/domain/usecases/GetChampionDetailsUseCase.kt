@@ -4,7 +4,7 @@ import com.example.championsapplication.domain.model.ErrorType
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.repository.ChampionsRepository
 import com.example.championsapplication.presentation.uimodels.UIChampion
-import com.example.championsapplication.utils.ChampionUiModelMapper
+import com.example.championsapplication.domain.mappers.ChampionUiModelMapper
 import javax.inject.Inject
 
 class GetChampionDetailsUseCase @Inject constructor(

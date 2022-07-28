@@ -1,15 +1,14 @@
 package com.example.championsapplication.data.datasource
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.championsapplication.data.db.ChampionEntity
 import com.example.championsapplication.data.db.ChampionsDao
 import com.example.championsapplication.domain.model.ErrorTypeHandlerImpl
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.getChampionEntity
 import com.example.championsapplication.getChampionsEntitiesList
 import com.example.championsapplication.getChampionsList
-import com.example.championsapplication.utils.ChampionEntityModelMapper
-import com.example.championsapplication.utils.ChampionModelMapper
+import com.example.championsapplication.domain.mappers.ChampionEntityModelMapper
+import com.example.championsapplication.domain.mappers.ChampionModelMapper
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
@@ -21,8 +20,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentCaptor
-import org.mockito.Captor
 
 
 @OptIn(ExperimentalCoroutinesApi::class)

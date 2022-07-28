@@ -2,9 +2,9 @@ package com.example.championsapplication.di
 
 import com.example.championsapplication.domain.model.Champion
 import com.example.championsapplication.presentation.uimodels.UIChampion
-import com.example.championsapplication.utils.ChampionUiModelMapper
-import com.example.championsapplication.utils.ListMapper
-import com.example.championsapplication.utils.ListMapperImpl
+import com.example.championsapplication.domain.mappers.ChampionUiModelMapper
+import com.example.championsapplication.domain.mappers.ListMapper
+import com.example.championsapplication.domain.mappers.ListMapperImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

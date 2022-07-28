@@ -1,13 +1,12 @@
 package com.example.championsapplication.data.datasource
 
-import com.example.championsapplication.data.db.ChampionEntity
 import com.example.championsapplication.data.db.ChampionsDao
 import com.example.championsapplication.domain.model.Champion
 import com.example.championsapplication.domain.model.ErrorType
 import com.example.championsapplication.domain.model.ErrorTypeHandler
 import com.example.championsapplication.domain.model.Result
-import com.example.championsapplication.utils.ChampionEntityModelMapper
-import com.example.championsapplication.utils.ChampionModelMapper
+import com.example.championsapplication.domain.mappers.ChampionEntityModelMapper
+import com.example.championsapplication.domain.mappers.ChampionModelMapper
 import javax.inject.Inject
 
 class DBDataSource @Inject constructor(
