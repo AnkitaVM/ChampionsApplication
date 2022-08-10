@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.championsapplication.domain.model.ErrorType
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.usecases.GetAllChampionsUseCase
-import com.example.championsapplication.presentation.uimodels.UIChampion
+import com.example.championsapplication.domain.model.uimodels.UIChampion
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch

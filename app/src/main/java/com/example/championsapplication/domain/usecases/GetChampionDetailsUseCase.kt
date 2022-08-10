@@ -1,10 +1,10 @@
 package com.example.championsapplication.domain.usecases
 
-import com.example.championsapplication.domain.mapper.toUIChampion
 import com.example.championsapplication.domain.model.ErrorType
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.repository.ChampionsRepository
-import com.example.championsapplication.presentation.uimodels.UIChampion
+import com.example.championsapplication.domain.mapper.toUIChampion
+import com.example.championsapplication.domain.model.uimodels.UIChampion
 import javax.inject.Inject
 
 class GetChampionDetailsUseCase @Inject constructor(
@@ -15,7 +15,6 @@ class GetChampionDetailsUseCase @Inject constructor(
         if (res is Result.Success) {
             res.data?.let {
                 return Result.Success(it.toUIChampion())
-//                return Result.Success(championUiModelMapper.map(it))
             }
         }
         return Result.Error(ErrorType.UnknownError)

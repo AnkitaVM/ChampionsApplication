@@ -2,8 +2,8 @@ package com.example.championsapplication
 
 import com.example.championsapplication.data.db.ChampionEntity
 import com.example.championsapplication.domain.model.*
-import com.example.championsapplication.presentation.uimodels.UIChampion
-import com.example.championsapplication.presentation.uimodels.UIChampionImage
+import com.example.championsapplication.domain.model.uimodels.UIChampion
+import com.example.championsapplication.domain.model.uimodels.UIChampionImage
 import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody

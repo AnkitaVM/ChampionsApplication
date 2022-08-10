@@ -41,12 +41,16 @@ class ChampionsListFragment : Fragment() {
                 container,
                 false
             )
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // Set the adapter
         setChampionsAdapter()
         championsViewModel.getAllChampions()
         observeChampionsData()
-        return binding.root
     }
+
 
     private fun observeChampionsData() {
         championsViewModel.champions.observe(viewLifecycleOwner, Observer { result ->

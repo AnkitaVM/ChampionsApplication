@@ -1,8 +1,8 @@
 package com.example.championsapplication.data.datasource
 
 import com.example.championsapplication.data.db.ChampionsDao
-import com.example.championsapplication.domain.mapper.toChampion
-import com.example.championsapplication.domain.mapper.toChampionEntity
+import com.example.championsapplication.data.mapper.toChampion
+import com.example.championsapplication.data.mapper.toChampionEntity
 import com.example.championsapplication.domain.model.Champion
 import com.example.championsapplication.domain.model.ErrorType
 import com.example.championsapplication.domain.model.ErrorTypeHandler

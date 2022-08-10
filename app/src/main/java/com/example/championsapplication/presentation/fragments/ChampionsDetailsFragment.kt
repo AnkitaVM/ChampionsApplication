@@ -39,10 +39,13 @@ class ChampionsDetailsFragment : Fragment() {
             container,
             false
         )
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val championId = args.championId
         championsDetailsViewModel.getChampionDetails(championId)
         observeChampionDetails()
-        return binding.root
     }
 
     private fun observeChampionDetails() {
