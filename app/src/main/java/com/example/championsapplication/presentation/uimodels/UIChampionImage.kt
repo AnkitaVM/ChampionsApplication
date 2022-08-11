@@ -1,4 +1,4 @@
-package com.example.championsapplication.domain.model.uimodels
+package com.example.championsapplication.presentation.uimodels
 
 data class UIChampionImage(
     val full: String,

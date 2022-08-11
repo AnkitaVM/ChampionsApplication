@@ -45,7 +45,7 @@ class ChampionsDetailsViewModelTest {
     @Test
     fun getChampionDetails_championDetailsVM_successReturned() {
         runTest {
-            coEvery { getChampionDetailsUseCase("1") } returns getUIChampionDetailsResultSuccess()
+            coEvery { getChampionDetailsUseCase("1") } returns getChampionDetailsResultSuccess()
             championsDetailsViewModel.getChampionDetails("1")
             advanceUntilIdle()
             val champion = championsDetailsViewModel.champion.getOrAwaitValue()
@@ -57,7 +57,7 @@ class ChampionsDetailsViewModelTest {
     @Test
     fun getChampionDetails_championDetailsVM_DataErrorReturned() {
         runTest {
-            coEvery { getChampionDetailsUseCase("1") } returns getUIChampionDetailsResultDataError()
+            coEvery { getChampionDetailsUseCase("1") } returns getChampionDetailsResultDataError()
             championsDetailsViewModel.getChampionDetails("1")
             advanceUntilIdle()
             val champion = championsDetailsViewModel.champion.getOrAwaitValue()
@@ -70,7 +70,7 @@ class ChampionsDetailsViewModelTest {
     @Test
     fun getChampionDetails_championDetailsVM_ServerErrorReturned() {
         runTest {
-            coEvery { getChampionDetailsUseCase("1") } returns getUIChampionDetailsResultServerError()
+            coEvery { getChampionDetailsUseCase("1") } returns getChampionDetailsResultServerError()
             championsDetailsViewModel.getChampionDetails("1")
             advanceUntilIdle()
             val champion = championsDetailsViewModel.champion.getOrAwaitValue()
@@ -83,7 +83,7 @@ class ChampionsDetailsViewModelTest {
     @Test
     fun getChampionDetails_championDetailsVM_NetworkErrorReturned() {
         runTest {
-            coEvery { getChampionDetailsUseCase("1") } returns getUIChampionDetailsResultNetworkError()
+            coEvery { getChampionDetailsUseCase("1") } returns getChampionDetailsResultNetworkError()
             championsDetailsViewModel.getChampionDetails("1")
             advanceUntilIdle()
             val champion = championsDetailsViewModel.champion.getOrAwaitValue()
@@ -96,7 +96,7 @@ class ChampionsDetailsViewModelTest {
     @Test
     fun getChampionDetails_championDetailsVM_UnknownErrorReturned() {
         runTest {
-            coEvery { getChampionDetailsUseCase("1") } returns getUIChampionDetailsResultUnknownError()
+            coEvery { getChampionDetailsUseCase("1") } returns getChampionDetailsResultUnknownError()
             championsDetailsViewModel.getChampionDetails("1")
             advanceUntilIdle()
             val champion = championsDetailsViewModel.champion.getOrAwaitValue()

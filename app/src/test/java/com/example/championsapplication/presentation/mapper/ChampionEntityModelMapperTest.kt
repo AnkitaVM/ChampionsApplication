@@ -1,0 +1,3 @@
+package com.example.championsapplication.presentation.mapper
+
+class ChampionEntityModelMapperTest

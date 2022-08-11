@@ -46,7 +46,7 @@ class ChampionsListViewModelTest {
     @Test
     fun getAllChampions_championListViewModel_valueStoredInField() {
         runTest {
-            coEvery { getAllChampionsUseCase() } returns getUIChampionListResultSuccess()
+            coEvery { getAllChampionsUseCase() } returns getResponseInWrappedResultClassFromDB()
             championsListViewModel.getAllChampions()
             advanceUntilIdle()
             val champions = championsListViewModel.champions.getOrAwaitValue()
@@ -58,7 +58,7 @@ class ChampionsListViewModelTest {
     @Test
     fun getAllChampions_championListViewModel_DataErrorReturned() {
         runTest {
-            coEvery { getAllChampionsUseCase() } returns getUIChampionDetailsResultDataError()
+            coEvery { getAllChampionsUseCase() } returns getChampionDetailsResultDataError()
             championsListViewModel.getAllChampions()
             advanceUntilIdle()
             val champions = championsListViewModel.champions.getOrAwaitValue()
@@ -71,7 +71,7 @@ class ChampionsListViewModelTest {
     @Test
     fun getAllChampions_championListViewModel_ServerErrorReturned() {
         runTest {
-            coEvery { getAllChampionsUseCase() } returns getUIChampionDetailsResultServerError()
+            coEvery { getAllChampionsUseCase() } returns getChampionDetailsResultServerError()
             championsListViewModel.getAllChampions()
             advanceUntilIdle()
             val champions = championsListViewModel.champions.getOrAwaitValue()
@@ -84,7 +84,7 @@ class ChampionsListViewModelTest {
     @Test
     fun getAllChampions_championListViewModel_NetworkErrorReturned() {
         runTest {
-            coEvery { getAllChampionsUseCase() } returns getUIChampionDetailsResultNetworkError()
+            coEvery { getAllChampionsUseCase() } returns getChampionDetailsResultNetworkError()
             championsListViewModel.getAllChampions()
             advanceUntilIdle()
             val champions = championsListViewModel.champions.getOrAwaitValue()
@@ -97,7 +97,7 @@ class ChampionsListViewModelTest {
     @Test
     fun getAllChampions_championListViewModel_UnknownErrorReturned() {
         runTest {
-            coEvery { getAllChampionsUseCase() } returns getUIChampionDetailsResultUnknownError()
+            coEvery { getAllChampionsUseCase() } returns getChampionDetailsResultUnknownError()
             championsListViewModel.getAllChampions()
             advanceUntilIdle()
             val champions = championsListViewModel.champions.getOrAwaitValue()

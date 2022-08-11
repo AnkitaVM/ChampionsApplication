@@ -3,8 +3,8 @@ package com.example.championsapplication.domain.usecases
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.repository.ChampionsRepository
-import com.example.championsapplication.getUIChampionDetailsResultDataError
-import com.example.championsapplication.getUIChampionsList
+import com.example.championsapplication.getChampionDetailsResultDataError
+import com.example.championsapplication.getChampionsList
 import com.example.championsapplication.getResponseInWrappedResultClassFromDB
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -55,14 +55,14 @@ class GetAllChampionsUseCaseTest {
 //            coEvery { List<Champion>.toListOfUIChampion() } returns getUIChampionsList()
             val champions = getAllChampionsUseCase()
             Assert.assertTrue(champions is Result.Success)
-            Assert.assertEquals(champions.data, getUIChampionsList())
+            Assert.assertEquals(champions.data, getChampionsList())
         }
     }
 
     @Test
     fun getAllChampions_GetAllChampionsUseCase_ErrorReturned() {
         runTest {
-            coEvery { repository.getChampions() } returns getUIChampionDetailsResultDataError()
+            coEvery { repository.getChampions() } returns getChampionDetailsResultDataError()
 //            coEvery { listMapper.map(any()) } returns getUIChampionsList()
             val champions = getAllChampionsUseCase()
             Assert.assertTrue(champions is Result.Error)

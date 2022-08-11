@@ -1,9 +1,9 @@
-package com.example.championsapplication.domain.mapper
+package com.example.championsapplication.presentation.mapper
 
 import com.example.championsapplication.domain.model.Champion
 import com.example.championsapplication.domain.model.ChampionImage
-import com.example.championsapplication.domain.model.uimodels.UIChampion
-import com.example.championsapplication.domain.model.uimodels.UIChampionImage
+import com.example.championsapplication.presentation.uimodels.UIChampion
+import com.example.championsapplication.presentation.uimodels.UIChampionImage
 
 fun ChampionImage.toUIChampionImage(championImage: ChampionImage): UIChampionImage {
     return UIChampionImage(

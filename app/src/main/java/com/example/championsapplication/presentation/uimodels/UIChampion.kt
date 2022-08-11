@@ -1,4 +1,4 @@
-package com.example.championsapplication.domain.model.uimodels
+package com.example.championsapplication.presentation.uimodels
 
 import com.google.gson.annotations.SerializedName
 

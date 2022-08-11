@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.championsapplication.BuildConfig
 import com.example.championsapplication.data.api.IMAGE_URL
 import com.example.championsapplication.databinding.LayoutItemChampionsListBinding
-import com.example.championsapplication.domain.model.uimodels.UIChampion
+import com.example.championsapplication.presentation.uimodels.UIChampion
 import javax.inject.Inject
 
 class ChampionsRecyclerViewAdapter @Inject constructor(

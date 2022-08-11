@@ -2,8 +2,8 @@ package com.example.championsapplication
 
 import com.example.championsapplication.data.db.ChampionEntity
 import com.example.championsapplication.domain.model.*
-import com.example.championsapplication.domain.model.uimodels.UIChampion
-import com.example.championsapplication.domain.model.uimodels.UIChampionImage
+import com.example.championsapplication.presentation.uimodels.UIChampion
+import com.example.championsapplication.presentation.uimodels.UIChampionImage
 import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody
@@ -99,25 +99,45 @@ fun getUIChampionDetailsResultSuccess(): Result<UIChampion> {
     return Result.Success(getUIChampionModel("1"))
 }
 
-fun <T> getUIChampionDetailsResultError(errorType: ErrorType): Result<T> {
+fun <T> getChampionDetailsResultError(errorType: ErrorType): Result<T> {
     return Result.Error(errorType)
 }
 
-fun <T> getUIChampionDetailsResultDataError(): Result<T> {
-    return getUIChampionDetailsResultError(ErrorType.DataError)
+fun <T> getChampionDetailsResultDataError(): Result<T> {
+    return getChampionDetailsResultError(ErrorType.DataError)
 }
 
-fun <T> getUIChampionDetailsResultServerError(): Result<T> {
-    return getUIChampionDetailsResultError(ErrorType.ServerError)
+fun <T> getChampionDetailsResultServerError(): Result<T> {
+    return getChampionDetailsResultError(ErrorType.ServerError)
 }
 
-fun <T> getUIChampionDetailsResultNetworkError(): Result<T> {
-    return getUIChampionDetailsResultError(ErrorType.NetworkError)
+fun <T> getChampionDetailsResultNetworkError(): Result<T> {
+    return getChampionDetailsResultError(ErrorType.NetworkError)
 }
 
-fun <T> getUIChampionDetailsResultUnknownError(): Result<T> {
-    return getUIChampionDetailsResultError(ErrorType.UnknownError)
+fun <T> getChampionDetailsResultUnknownError(): Result<T> {
+    return getChampionDetailsResultError(ErrorType.UnknownError)
 }
+
+//fun <T> getUIChampionDetailsResultError(errorType: ErrorType): Result<T> {
+//    return Result.Error(errorType)
+//}
+//
+//fun <T> getUIChampionDetailsResultDataError(): Result<T> {
+//    return getUIChampionDetailsResultError(ErrorType.DataError)
+//}
+//
+//fun <T> getUIChampionDetailsResultServerError(): Result<T> {
+//    return getUIChampionDetailsResultError(ErrorType.ServerError)
+//}
+//
+//fun <T> getUIChampionDetailsResultNetworkError(): Result<T> {
+//    return getUIChampionDetailsResultError(ErrorType.NetworkError)
+//}
+//
+//fun <T> getUIChampionDetailsResultUnknownError(): Result<T> {
+//    return getUIChampionDetailsResultError(ErrorType.UnknownError)
+//}
 
 fun getUIChampionModel(num: String): UIChampion {
     return UIChampion(

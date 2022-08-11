@@ -7,7 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.championsapplication.domain.model.ErrorType
 import com.example.championsapplication.domain.model.Result
 import com.example.championsapplication.domain.usecases.GetChampionDetailsUseCase
-import com.example.championsapplication.domain.model.uimodels.UIChampion
+import com.example.championsapplication.presentation.mapper.toUIChampion
+import com.example.championsapplication.presentation.uimodels.UIChampion
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -26,7 +27,14 @@ class ChampionsDetailsViewModel @Inject constructor(
     fun getChampionDetails(chId: String) = viewModelScope.launch(dispatcher) {
         try {
             _champion.postValue(Result.Loading())
-            _champion.postValue(getChampionDetailsUseCase(chId))
+            val res = getChampionDetailsUseCase(chId)
+            if (res is Result.Success) {
+                res.data?.let {
+                    _champion.postValue(Result.Success(it.toUIChampion()))
+                }
+            } else {
+                _champion.postValue(Result.Error(res.errorType))
+            }
         } catch (e: Exception) {
             _champion.postValue(Result.Error(ErrorType.UnknownError))
         }
